@@ -1,0 +1,16 @@
+controlador\servletControl.class
+modelo\conexion2.class
+controlador\ServletValidar.class
+modelo\DaoTecnico.class
+modelo\DaoEncargado.class
+config\Conexion.class
+controlador\ServletCliente.class
+modelo\DaoCliente.class
+controlador\conexion.class
+modelo\Cliente.class
+modelo\Persona.class
+modelo\Dao_login.class
+modelo\Encargado.class
+modelo\Usuario.class
+modelo\DaoUsuario.class
+modelo\Tecnicos.class

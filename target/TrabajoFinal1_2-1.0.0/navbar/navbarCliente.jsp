@@ -49,7 +49,7 @@
                         </a>
                         <ul class="pcoded-submenu">
                             <li class="" id="iluminar">
-                                <a href="seleccionarHorarios.jsp" class="waves-effect waves-dark">
+                                <a href="ServletValidar?accion=listarhoraiosservi" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                     <span class="pcoded-mtext"
                                         data-i18n="nav.basic-components.alert">Seleccionar Horario</span>

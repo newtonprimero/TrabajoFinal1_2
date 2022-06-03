@@ -13,11 +13,14 @@ public class Tecnicos {
     String nombres;
     String apellidos;
     int dni;
+    Distrito distrito;
     String direccion;
     String especialidad;
+    Especialidad espe;
     int telefono1;
     int telefono2;
     String correo;
+    String password;
     String fecha_hora;
     boolean estado_activ;
 
@@ -37,8 +40,14 @@ public class Tecnicos {
         this.fecha_hora = fecha_hora;
         this.estado_activ = estado_activ;
     }
-    
-    
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
     
     public int getId_tecn() {
         return id_tecn;
@@ -126,6 +135,22 @@ public class Tecnicos {
 
     public void setEstado_activ(boolean estado_activ) {
         this.estado_activ = estado_activ;
+    }
+
+    public Distrito getDistrito() {
+        return distrito;
+    }
+
+    public void setDistrito(Distrito distrito) {
+        this.distrito = distrito;
+    }
+
+    public Especialidad getEspe() {
+        return espe;
+    }
+
+    public void setEspe(Especialidad espe) {
+        this.espe = espe;
     }
     
     

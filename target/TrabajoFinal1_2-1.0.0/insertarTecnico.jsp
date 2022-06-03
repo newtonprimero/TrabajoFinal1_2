@@ -73,7 +73,7 @@
                                 <div class="row align-items-center">
                                     <div class="col-md-8">
                                         <div class="page-header-title">
-                                            <h5 class="m-b-10">Registrar Cliente</h5>
+                                            <h5 class="m-b-10">Registrar Tecnico</h5>
                                             <p class="m-b-0">Bienvenidos al sistema Taller UTP</p>
                                         </div>
                                     </div>
@@ -95,15 +95,16 @@
                             <div class="container-fluid">
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <form class="md-float-material form-material" action="ServletValidar?accion=registrarnuevocliente" method="post">
+                                        <form class="md-float-material form-material" action="ServletValidar?accion=registrarTecnico" method="post">
 
                                             <div class="auth-box card">
                                                 <div class="card-block">
                                                     <div class="row m-b-20">
                                                         <div class="col-md-12">
-                                                            <h3 class="text-center txt-primary">Registrar Cliente</h3>
+                                                            <h3 class="text-center txt-primary">Registrar Técnico</h3>
                                                         </div>
                                                     </div>
+                                                    <h4 class="sub-title">Datos Personales</h4>
                                                     <div class="form-group form-primary">
                                                         <input type="text" name="txtnombres" class="form-control"
                                                             required="">
@@ -122,6 +123,25 @@
                                                         <span class="form-bar"></span>
                                                         <label class="float-label">DNI</label>
                                                     </div>
+                                                    <h4 class="sub-title">Datos especialidad</h4>
+                                                    <div class="form-group form-primary">
+                                                        <input type="hidden" name="email" class="form-control"
+                                                            >
+                                                        <span class="form-bar">Seleccione Especialidad</span>
+                                                        <select name="cboespecia" class="form-control" >
+                                                            <option value="0">Seleccione Especialidad</option>
+                                                            <c:forEach items="${especialidades}" var="marc">
+                                                                <option value="${marc.id_especia}" 
+                                                                    <c:if test="${marc.id_especia == 
+                                                                      Tecnicos.especia.id_especia}">
+                                                                    selected
+                                                                    </c:if>>
+                                                                    ${marc.descrip}
+                                                                </option>
+                                                            </c:forEach>
+                                                        </select>
+                                                    </div>
+                                                    <h4 class="sub-title">Datos de contacto</h4>
                                                     <div class="form-group form-primary row">
                                                         <div class="form-group col-sm-6" >
                                                             <input type="number" name="txttelefono1" class="form-control"
@@ -131,7 +151,7 @@
                                                         </div>
                                                         <div class="form-group col-sm-6" >
                                                             <input type="number" name="txttelefono2" class="form-control"
-                                                                required="">
+                                                                   required="" value="0">
                                                             <span class="form-bar"></span>
                                                             <label class="float-label" style="margin-left:15px ;">Telefono Opcional</label>   
                                                         </div>
@@ -144,7 +164,7 @@
                                                             <option value="0">Seleccione su distrito</option>
                                                             <c:forEach items="${distritos}" var="distr">
                                                                 <option value="${distr.id_distrito}" 
-                                                                    <c:if test="${cdistr.id_distrito == 
+                                                                    <c:if test="${distr.id_distrito == 
                                                                       cliente.distrit.id_distrito}">
                                                                     selected
                                                                     </c:if>>
@@ -159,8 +179,9 @@
                                                         <span class="form-bar"></span>
                                                         <label class="float-label">Dirección</label>
                                                     </div>
+                                                    <h4 class="sub-title">Datos Usuario</h4>
                                                     <div class="form-group form-primary">
-                                                        <input type="text" name="txtemail" class="form-control"
+                                                        <input type="email" name="txtemail" class="form-control"
                                                             required="">
                                                         <span class="form-bar"></span>
                                                         <label class="float-label">Email</label>

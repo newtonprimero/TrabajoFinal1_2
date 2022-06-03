@@ -131,7 +131,7 @@
                                                         </div>
                                                         <div class="form-group col-sm-6" >
                                                             <input type="number" name="txttelefono2" class="form-control"
-                                                                required="">
+                                                                   required="" value="0">
                                                             <span class="form-bar"></span>
                                                             <label class="float-label" style="margin-left:15px ;">Telefono Opcional</label>   
                                                         </div>
@@ -160,7 +160,7 @@
                                                         <label class="float-label">Dirección</label>
                                                     </div>
                                                     <div class="form-group form-primary">
-                                                        <input type="text" name="txtemail" class="form-control"
+                                                        <input type="email" name="txtemail" class="form-control"
                                                             required="">
                                                         <span class="form-bar"></span>
                                                         <label class="float-label">Email</label>

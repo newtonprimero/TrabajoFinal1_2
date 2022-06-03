@@ -109,7 +109,7 @@
                                 </div>
                                 <div class="card-block table-border-style">
                                     <div class="table-responsive">
-                                        <table class="table table-hover">
+                                        <table class="table table-hover ">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
@@ -131,7 +131,7 @@
                                                         <td>${tenico.nombres} ${tenico.apellidos}</td>
                                                         <td>${tenico.dni}</td>
                                                         <td>${tenico.direccion}</td>
-                                                        <td>${tenico.telefono1}${tenico.telefono2}</td>
+                                                        <td>${tenico.telefono1} - ${tenico.telefono2}</td>
                                                         <td>${tenico.correo}</td>
                                                         <td>${tenico.especialidad}</td>
                                                         <c:if test="${tenico.estado_activ == true}">
@@ -144,7 +144,11 @@
                                                         
                                                         <td>
                                                             <button type="button" class="btn btn-primary fa fa-times" data-toggle="tooltip"  title="Desabilitar" data-original-title="Desabilitar" style="background: #771A1A; border-color: #771A1A"></button>
-                                                            <button type="button" class="btn btn-primary fa fa-pencil" data-toggle="tooltip"  title="Editar" data-original-title="Editar" style="background: #771A1A; border-color: #771A1A"></button>
+                                                            <a href="<c:url value="ServletValidar">
+                                                                        <c:param name="accion" value="leerTecnico" />
+                                                                        <c:param name="idtecnico" value="${tenico.id_tecn}" />
+                                                                    </c:url>"><button type="button" class="btn btn-primary fa fa-pencil" data-toggle="modal" data-target="#staticBackdrop"  title="Editar" data-original-title="Editar" style="background: #771A1A; border-color: #771A1A"></button>
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>

@@ -135,8 +135,8 @@
                                                         <span class="form-bar"></span>
                                                         <select name="selecEstado" class="form-control" >
                                                           <option value="">Seleccione estado</option>
-                                                          <option value="1">Activo</option>
-                                                          <option value="0">Resuelto</option>
+                                                          <option value="true">Activo</option>
+                                                          <option value="false">Resuelto</option>
                                                       </select>
                                                     </div>
                                                     <div class="form-group form-primary">

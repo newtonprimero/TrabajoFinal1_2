@@ -69,10 +69,10 @@ public class DaoEncargado {
                 System.out.println("llega al while");
                 Horario horario=new Horario();
                 horario.setId_horario(rs.getInt(1));
-                Persona perso=new Persona();
-                perso.setId_persona(rs.getInt(2));
+                Tecnicos perso=new Tecnicos();
+                perso.setId_tecn(rs.getInt(2));
                 perso.setApellidos(rs.getString(3));
-                perso.setDni(rs.getString(4));
+                perso.setDni(rs.getInt(4));
                 horario.setTecnico(perso);
                 horario.setFecha(rs.getString(5));
                 horario.setHoraini(rs.getString(6));
@@ -81,7 +81,7 @@ public class DaoEncargado {
                 lst.add(horario);
                 System.out.println("el id del horario "+horario.getId_horario());
                 System.out.println(horario.getFecha());
-                idper=perso.getId_persona();
+                idper=perso.getId_tecn();
             }con.close();
         } catch (Exception e) {
             System.out.println("el error al listar horarios "+e);

@@ -10,7 +10,7 @@ package modelo;
  */
 public class Horario {
     int id_horario;
-    Persona tecnico;
+    Tecnicos tecnico;
     String fecha;
     String horaini;
     String horafin;
@@ -24,11 +24,11 @@ public class Horario {
         this.id_horario = id_horario;
     }
 
-    public Persona getTecnico() {
+    public Tecnicos getTecnico() {
         return tecnico;
     }
 
-    public void setTecnico(Persona tecnico) {
+    public void setTecnico(Tecnicos tecnico) {
         this.tecnico = tecnico;
     }
 

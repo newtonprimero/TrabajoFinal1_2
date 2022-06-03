@@ -113,14 +113,14 @@
                 <div class="pcoded-navigation-label" data-i18n="nav.category.forms">Registrar</div>
                 <ul class="pcoded-item pcoded-left-item">
                     <li id="iluminar">
-                        <a href="insertarTecnico.jsp" class="waves-effect waves-dark">
+                        <a href="ServletValidar?accion=formRegisTecnico" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="ti-layers"></i><b>FC</b></span>
                             <span class="pcoded-mtext" data-i18n="nav.form-components.main">Técnicos</span>
                             <span class="pcoded-mcaret"></span>
                         </a>
                     </li>
                     <li id="iluminar">
-                        <a href="insertarEncargado.jsp" class="waves-effect waves-dark">
+                        <a href="ServletValidar?accion=formRegisTecnico" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="ti-layers"></i><b>FC</b></span>
                             <span class="pcoded-mtext" data-i18n="nav.form-components.main">Encargados</span>
                             <span class="pcoded-mcaret"></span>

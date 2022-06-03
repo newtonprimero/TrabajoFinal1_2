@@ -131,7 +131,7 @@
                                                         </div>
                                                         <div class="form-group col-sm-6" >
                                                             <input type="number" name="txttelefono2" class="form-control"
-                                                                required="">
+                                                                   required="" value="0">
                                                             <span class="form-bar"></span>
                                                             <label class="float-label" style="margin-left:15px ;">Telefono Opcional</label>   
                                                         </div>

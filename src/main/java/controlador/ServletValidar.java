@@ -7,6 +7,8 @@ package controlador;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,12 +22,14 @@ import modelo.Cliente;
 import modelo.DaoCliente;
 import modelo.DaoDistrito;
 import modelo.DaoEncargado;
+import modelo.DaoEspecialidad;
 import modelo.DaoRepuesto;
 import modelo.DaoServicio;
 import modelo.DaoTecnico;
 import modelo.DaoUsuario;
 import modelo.Distrito;
 import modelo.Encargado;
+import modelo.Especialidad;
 import modelo.Horario;
 import modelo.Marca;
 import modelo.Persona;
@@ -79,6 +83,16 @@ public class ServletValidar extends HttpServlet {
                     case "listarrepuestos":
                         listarRepuestos(request, response);
                         break;
+                    case "listarhoraiosservi":
+                        listarHrariosServi(request, response);
+                        break;
+                    case "mosrtrarfomrCitaSelcet":
+                        leerSchedule(request,response);
+                        mostrarformCitasinFecha(request,response);
+                        break;
+                    case "leerHorario":
+                        leerSchedule(request,response);
+                        break;
                     case "registrarcliente":
                         formRegistrarCliente(request, response);
                         break;
@@ -91,6 +105,10 @@ public class ServletValidar extends HttpServlet {
                     case "registrarcita":
                         registrarCita(request, response);
                         break;
+                    case "registrarcita2":
+                        System.out.println("llegar a case");
+                        registrarCitasinhora(request, response);
+                        break;
                     case "misservicios":
                         listarMisServicios(request, response);
                         break;
@@ -101,6 +119,23 @@ public class ServletValidar extends HttpServlet {
                         }else if(shear.equals("shearIngresarH")){
                             insertarHorario(request, response);
                         }
+                        break;
+                    case "formRegisTecnico":
+                        formRegistrarTecnico(request, response);
+                        break;
+                    case "registrarTecnico":
+                        registrarTecnico(request, response);
+                        break;
+                    case "leerCliente":
+                        leerClient(request, response);
+                        break;
+                    case "actualizarCliente":
+                        actualizarClient(request, response);
+                    case "leerTecnico":
+                        leerTecnic(request, response);
+                        break;
+                    case "actualizarTecnico":
+                        actualizarTecnic(request, response);
                         break;
                     default:
                         this.getServletConfig().getServletContext().getRequestDispatcher("./login.jsp").forward(request, response);
@@ -189,37 +224,6 @@ public class ServletValidar extends HttpServlet {
         usu = this.obtenerUsuario(request);
         usu = daou.validar(usu);
         System.out.println("el usuario en verificar es "+usu);
-        /*if (usu!=null) {
-            switch (usu.getId_rol()) {
-            case 1:
-                sesion = request.getSession();
-                sesion.setAttribute("usuario", usu);
-                request.setAttribute("usuariohome", daou);
-                System.out.println("llega aqui ahora");
-                this.getServletConfig().getServletContext().getRequestDispatcher("/homeEncargado.jsp").forward(request, response);
-                break;
-            case 2:    
-                sesion = request.getSession();
-                sesion.setAttribute("usuario", usu);
-                request.setAttribute("usuario", daou);
-                System.out.println("llega aqui redireccion homeEncargado "+usu.getNombreUsuario());
-                this.getServletConfig().getServletContext().getRequestDispatcher("/homeEncargado.jsp").forward(request, response);
-                break;
-            case 3:
-                sesion = request.getSession();
-                sesion.setAttribute("usuario", usu);
-                request.setAttribute("usuario", daou);
-                this.getServletConfig().getServletContext().getRequestDispatcher("/homeCliente.jsp").forward(request, response);
-                break;
-            default:
-                request.setAttribute("msj", "Credenciales Incorrectas");
-                request.getRequestDispatcher("/login.jsp").forward(request, response);
-            }
-        }else{
-            request.setAttribute("msj", "Credenciales Incorrectas");
-                request.getRequestDispatcher("/login.jsp").forward(request, response);
-        }*/
-        
         if (usu!=null && usu.getId_rol() == 1) {
             sesion = request.getSession();
             sesion.setAttribute("usuario", usu);
@@ -413,32 +417,115 @@ public class ServletValidar extends HttpServlet {
         Distrito dis;
         Marca mar;
         Aparato apa;
-        if(request.getParameter("txridper") != null && request.getParameter("cbomarca") !=null 
-                && request.getParameter("txtnroserie") !=null && request.getParameter("txtdescripcion") !=null 
-                && request.getParameter("cbodistrito") !=null && request.getParameter("txtdireccion") !=null
-                && request.getParameter("inputfecha") !=null){
-            ci=new Cita();
-            ci.setId_persona(Integer.parseInt(request.getParameter("txridper")));
-            mar=new Marca();
-            mar.setId_marca(Integer.parseInt(request.getParameter("cbomarca")));
-            apa=new Aparato();
-            apa.setNroSerie(request.getParameter("txtnroserie"));
-            apa.setDescAparato(request.getParameter("txtdescripcion"));
-            apa.setMarca(mar);
-            ci.setAparato(apa);
-            dis=new Distrito();
-            dis.setId_distrito(Integer.parseInt(request.getParameter("cbodistrito")));
-            ci.setDiaDistrito(dis);
-            ci.setDireccion(request.getParameter("txtdireccion"));
-            ci.setFecha_hora(request.getParameter("inputfecha"));
-            try {
-                daose=new DaoServicio();
-                daose.nuevoCita(ci);
-                response.sendRedirect("/homeClientes.jsp");
-            } catch (Exception e) {
-                System.out.println("error al registrar "+e);
+        if(request.getParameter("inputfecha")!=null){
+            if(request.getParameter("txridper") != null && request.getParameter("cbomarca") !=null 
+                    && request.getParameter("txtnroserie") !=null && request.getParameter("txtdescripcion") !=null 
+                    && request.getParameter("cbodistrito") !=null && request.getParameter("txtdireccion") !=null
+                    && request.getParameter("inputfecha") !=null){
+                ci=new Cita();
+                ci.setId_persona(Integer.parseInt(request.getParameter("txridper")));
+                mar=new Marca();
+                mar.setId_marca(Integer.parseInt(request.getParameter("cbomarca")));
+                apa=new Aparato();
+                apa.setNroSerie(request.getParameter("txtnroserie"));
+                apa.setDescAparato(request.getParameter("txtdescripcion"));
+                apa.setMarca(mar);
+                ci.setAparato(apa);
+                dis=new Distrito();
+                dis.setId_distrito(Integer.parseInt(request.getParameter("cbodistrito")));
+                ci.setDiaDistrito(dis);
+                ci.setDireccion(request.getParameter("txtdireccion"));
+                ci.setFecha_hora(request.getParameter("inputfecha"));
+                try {
+                    System.out.println("entro al if de cita");
+                    daose=new DaoServicio();
+                    daose.nuevoCita(ci);
+                    this.getServletConfig().getServletContext().getRequestDispatcher("/homeCliente.jsp").forward(request, response);
+                } catch (Exception e) {
+                    System.out.println("error al registrar "+e);
+                }
+            }
+        }else{
+            if(request.getParameter("txridper") != null && request.getParameter("cbomarca") !=null 
+                    && request.getParameter("txtnroserie") !=null && request.getParameter("txtdescripcion") !=null 
+                    && request.getParameter("cbodistrito") !=null && request.getParameter("txtdireccion") !=null){
+                ci=new Cita();
+                ci.setId_persona(Integer.parseInt(request.getParameter("txridper")));
+                mar=new Marca();
+                mar.setId_marca(Integer.parseInt(request.getParameter("cbomarca")));
+                apa=new Aparato();
+                apa.setNroSerie(request.getParameter("txtnroserie"));
+                apa.setDescAparato(request.getParameter("txtdescripcion"));
+                apa.setMarca(mar);
+                ci.setAparato(apa);
+                dis=new Distrito();
+                dis.setId_distrito(Integer.parseInt(request.getParameter("cbodistrito")));
+                ci.setDiaDistrito(dis);
+                ci.setDireccion(request.getParameter("txtdireccion"));
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                LocalDateTime actual=LocalDateTime.now();
+                String hora=actual.format(dtf);
+                ci.setFecha_hora(hora);
+                Horario horaa=new Horario();
+                horaa.setId_horario(Integer.parseInt(request.getParameter("txridhora")));
+                System.out.println("el id horario es "+horaa.getId_horario());
+                try {
+                    System.out.println("entro en el else");
+                    daose=new DaoServicio();
+                    daose.nuevoCitaHorario(ci,horaa);
+                    this.getServletConfig().getServletContext().getRequestDispatcher("/homeCliente.jsp").forward(request, response);
+                } catch (Exception e) {
+                    System.out.println("error al registrar "+e);
+                }
             }
         }
+    }
+    
+    private void registrarCitasinhora (HttpServletRequest request, HttpServletResponse response){
+        DaoServicio daose;
+        Cita ci=null;
+        Distrito dis;
+        Marca mar;
+        Aparato apa;
+        if(request.getParameter("txridper") != null && request.getParameter("cbomarca") !=null 
+                    && request.getParameter("txtnroserie") !=null && request.getParameter("txtdescripcion") !=null 
+                    && request.getParameter("cbodistrito") !=null && request.getParameter("txtdireccion") !=null){
+                ci=new Cita();
+                ci.setId_persona(Integer.parseInt(request.getParameter("txridper")));
+                System.out.println("ci id"+ci.getId_persona());
+                mar=new Marca();
+                mar.setId_marca(Integer.parseInt(request.getParameter("cbomarca")));
+                apa=new Aparato();
+                apa.setNroSerie(request.getParameter("txtnroserie"));
+                apa.setDescAparato(request.getParameter("txtdescripcion"));
+                apa.setMarca(mar);
+                ci.setAparato(apa);
+                dis=new Distrito();
+                dis.setId_distrito(Integer.parseInt(request.getParameter("cbodistrito")));
+                ci.setDiaDistrito(dis);
+                ci.setDireccion(request.getParameter("txtdireccion"));
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                LocalDateTime actual=LocalDateTime.now();
+                String hora=actual.format(dtf);
+                ci.setFecha_hora(hora);
+                Horario horaa=new Horario();
+                Tecnicos tecni=new  Tecnicos();
+                tecni.setId_tecn(Integer.parseInt(request.getParameter("txridtec")));
+                System.out.println("llega aca registrarCitasinhora");
+                horaa.setId_horario(Integer.parseInt(request.getParameter("txridhora")));
+                horaa.setTecnico(tecni);
+                System.out.println("el id horario es "+horaa.getId_horario());
+                try {
+                    System.out.println("entro en el else");
+                    daose=new DaoServicio();
+                    daose.nuevoCitaHorario(ci,horaa);
+                    this.getServletConfig().getServletContext().getRequestDispatcher("/homeCliente.jsp").forward(request, response);
+                } catch (Exception e) {
+                    System.out.println("error al registrar "+e);
+                }
+            }else{
+                System.out.println("no entro al if");
+            }
     }
 
     private void listarMisServicios(HttpServletRequest request, HttpServletResponse response) {
@@ -462,6 +549,7 @@ public class ServletValidar extends HttpServlet {
         } catch (Exception e) {
         }
     }
+    
     
     private void ipPersona(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("entra en id persona");
@@ -516,12 +604,265 @@ public class ServletValidar extends HttpServlet {
             try {
                 daoc=new DaoEncargado();
                 daoc.ingresarHorario(cli);
-                System.out.println(cli.isEstado_activ());
+                System.out.println("el estado cita "+cli.isEstado_activ());
                 this.getServletConfig().getServletContext().getRequestDispatcher("/asignacionHorarios.jsp").forward(request, response);
             } catch (Exception e) {
                 System.out.println("error al registrar "+e);
             }
         }
     }
+    private void mostrarEspecialidad (HttpServletRequest request){
+        DaoEspecialidad daoS=new DaoEspecialidad();
+        List<Especialidad> marc = null;
+        try {
+            marc = daoS.mostrarEspecialidades();
+            request.setAttribute("especialidades", marc);
+        } catch (SQLException e) {
+            request.setAttribute("msje", e);
+        }finally{
+            marc=null;
+            daoS=null;
+        }
+    }
 
+    private void formRegistrarTecnico(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            this.distritos(request);
+            this.mostrarEspecialidad(request);
+            this.getServletConfig().getServletContext()
+                    .getRequestDispatcher("/insertarTecnico.jsp").forward(request, response);
+        } catch (Exception e) {
+            request.setAttribute("msje", e);
+        }
+    }
+
+    private void registrarTecnico(HttpServletRequest request, HttpServletResponse response) {
+        DaoTecnico daot;
+        Tecnicos tec=null;
+        Distrito dis;
+        Especialidad esp;
+        if(request.getParameter("txtnombres") != null && request.getParameter("txtapellidos") !=null 
+                && request.getParameter("txtdni") !=null && request.getParameter("txttelefono1") !=null 
+                && request.getParameter("txtemail") !=null && request.getParameter("cbodistrito") !=null
+                && request.getParameter("txtdireccion") !=null&& request.getParameter("txtpassword") !=null){
+            tec=new Tecnicos();
+            tec.setNombres(request.getParameter("txtnombres"));
+            tec.setApellidos(request.getParameter("txtapellidos"));
+            tec.setDni(Integer.parseInt(request.getParameter("txtdni")));
+            esp=new Especialidad();
+            esp.setId_especia(Integer.parseInt(request.getParameter("cboespecia")));
+            tec.setEspe(esp);
+            dis=new Distrito();
+            dis.setId_distrito(Integer.parseInt(request.getParameter("cbodistrito")));
+            tec.setDistrito(dis);
+            tec.setDireccion(request.getParameter("txtdireccion"));
+            tec.setTelefono1(Integer.parseInt(request.getParameter("txttelefono1")));
+            tec.setTelefono2(Integer.parseInt(request.getParameter("txttelefono2")));
+            tec.setCorreo(request.getParameter("txtemail"));
+            tec.setPassword(request.getParameter("txtpassword"));
+            
+            try {
+                daot=new DaoTecnico();
+                daot.nuevoTecnico(tec);
+                response.sendRedirect("ServletValidar?accion=formRegisTecnico");
+            } catch (Exception e) {
+                System.out.println("error al registrar "+e);
+            }
+        }else
+            System.out.println("ocurrui un error");
+    }
+
+    private void actualizarClient(HttpServletRequest request, HttpServletResponse response) {
+        DaoCliente daoc;
+        Cliente cli=null;
+        Distrito dis;
+        if(request.getParameter("txtnombres") != null && request.getParameter("txtapellidos") !=null 
+                && request.getParameter("txtdni") !=null && request.getParameter("txttelefono1") !=null 
+                && request.getParameter("txtemail") !=null && request.getParameter("cbodistrito") !=null
+                && request.getParameter("txtdireccion") !=null&& request.getParameter("txtpassword") !=null){
+            cli=new Cliente();
+            cli.setId_client(Integer.parseInt(request.getParameter("txtipcli")));
+            cli.setNombres(request.getParameter("txtnombres"));
+            cli.setApellidos(request.getParameter("txtapellidos"));
+            cli.setDni(Integer.parseInt(request.getParameter("txtdni")));
+            dis=new Distrito();
+            dis.setId_distrito(Integer.parseInt(request.getParameter("cbodistrito")));
+            cli.setDistrit(dis);
+            cli.setDireccion(request.getParameter("txtdireccion"));
+            cli.setTelefono1(Integer.parseInt(request.getParameter("txttelefono1")));
+            cli.setTelefono2(Integer.parseInt(request.getParameter("txttelefono2")));
+            cli.setCorreo(request.getParameter("txtemail"));
+            cli.setPassword(request.getParameter("txtpassword"));
+            
+            try {
+                daoc=new DaoCliente();
+                daoc.actualizarCliente(cli);
+                response.sendRedirect("ServletValidar?accion=listarclientes");
+            } catch (Exception e) {
+                System.out.println("error al registrar "+e);
+            }
+        }
+    }
+
+    private void leerClient(HttpServletRequest request, HttpServletResponse response) {
+        DaoCliente daoc;
+        Cliente cli;
+        if(request.getParameter("idcliente")!=null){
+            cli=new Cliente();
+            cli.setId_client(Integer.parseInt(request.getParameter("idcliente")));
+            daoc=new DaoCliente();
+            try {
+                cli=daoc.leerCliente(cli);
+                if(cli != null){
+                    request.setAttribute("cliente", cli);
+                }else{
+                    request.setAttribute("msje", "No se encontro el Cliente");
+                }
+            } catch (Exception e) {
+                System.out.println("el error al encontrar el cliente es "+e);
+            }
+        }else{
+            request.setAttribute("msje", "No tiene el parametro necesario");
+        }
+        try {
+            this.distritos(request);
+            this.getServletConfig().getServletContext().getRequestDispatcher("/editar/editarCliente.jsp").forward(request, response);
+            System.out.println("se envio a edita");
+        } catch (Exception e) {
+            System.out.println("erro de obtener cliente "+e);
+        }
+    }
+    private void leerTecnic(HttpServletRequest request, HttpServletResponse response) {
+        DaoTecnico daoc;
+        Tecnicos cli;
+        if(request.getParameter("idtecnico")!=null){
+            cli=new Tecnicos();
+            cli.setId_tecn(Integer.parseInt(request.getParameter("idtecnico")));
+            System.out.println("id tecn "+cli.getId_tecn());
+            daoc=new DaoTecnico();
+            try {
+                cli=daoc.leerTecnico(cli);
+                if(cli != null){
+                    request.setAttribute("tecnico", cli);
+                }else{
+                    request.setAttribute("msje", "No se encontro el Tecnico");
+                }
+            } catch (Exception e) {
+                System.out.println("el error al encontrar el tecnico es "+e);
+            }
+        }else{
+            request.setAttribute("msje", "No tiene el parametro necesario");
+        }
+        try {
+            this.distritos(request);
+            this.mostrarEspecialidad(request);
+            this.getServletConfig().getServletContext().getRequestDispatcher("/editar/editarTecnico.jsp").forward(request, response);
+            System.out.println("se envio a edita");
+        } catch (Exception e) {
+            System.out.println("erro de obtener cliente "+e);
+        }
+    }
+
+    private void actualizarTecnic(HttpServletRequest request, HttpServletResponse response) {
+        DaoTecnico daot;
+        Tecnicos tec=null;
+        Distrito dis;
+        Especialidad esp;
+        if(request.getParameter("txtnombres") != null && request.getParameter("txtapellidos") !=null 
+                && request.getParameter("txtdni") !=null && request.getParameter("txttelefono1") !=null 
+                && request.getParameter("txtemail") !=null && request.getParameter("cbodistrito") !=null
+                && request.getParameter("txtdireccion") !=null&& request.getParameter("txtpassword") !=null){
+            tec=new Tecnicos();
+            tec.setId_tecn(Integer.parseInt(request.getParameter("txtiptecnic")));
+            tec.setNombres(request.getParameter("txtnombres"));
+            tec.setApellidos(request.getParameter("txtapellidos"));
+            tec.setDni(Integer.parseInt(request.getParameter("txtdni")));
+            esp=new Especialidad();
+            esp.setId_especia(Integer.parseInt(request.getParameter("cboespecia")));
+            tec.setEspe(esp);
+            dis=new Distrito();
+            dis.setId_distrito(Integer.parseInt(request.getParameter("cbodistrito")));
+            tec.setDistrito(dis);
+            tec.setDireccion(request.getParameter("txtdireccion"));
+            tec.setTelefono1(Integer.parseInt(request.getParameter("txttelefono1")));
+            tec.setTelefono2(Integer.parseInt(request.getParameter("txttelefono2")));
+            tec.setCorreo(request.getParameter("txtemail"));
+            tec.setPassword(request.getParameter("txtpassword"));
+            
+            try {
+                daot=new DaoTecnico();
+                daot.actualizarTecnico(tec);
+                response.sendRedirect("ServletValidar?accion=formRegisTecnico");
+            } catch (Exception e) {
+                System.out.println("error al registrar "+e);
+            }
+        }else
+            System.out.println("ocurrui un error");
+    }
+
+    private void listarHrariosServi(HttpServletRequest request, HttpServletResponse response) {
+        DaoServicio daoh=new DaoServicio();
+        List <Horario> selch; 
+        try {
+            selch = daoh.listarHorarios();
+            request.setAttribute("listahoraselct", selch);
+            System.out.println("lista horarios servicio" +selch);
+        } catch (Exception e) {
+            request.setAttribute("msje", "no se puedo listar");
+            System.out.println("eerro "+e);
+        } finally {
+            daoh = null;
+        }
+        try {
+            System.out.println("entro en redireccion");
+            this.getServletConfig().getServletContext().getRequestDispatcher("/seleccionarHorarios.jsp").forward(request, response);
+        } catch (Exception e) {
+        }
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private void mostrarformCitasinFecha(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            this.marcas(request);
+            this.distritos(request);
+            
+            this.getServletConfig().getServletContext()
+                    .getRequestDispatcher("/citas/solicitarCitaSinH.jsp").forward(request, response);
+        } catch (Exception e) {
+            System.out.println("--"+e);
+            request.setAttribute("msje", e);
+        }
+    }
+
+    private void leerSchedule(HttpServletRequest request, HttpServletResponse response) {
+        DaoServicio daos;
+        Horario hr;
+        if(request.getParameter("idhorario")!=null){
+            hr=new Horario();
+            hr.setId_horario(Integer.parseInt(request.getParameter("idhorario")));
+            System.out.println("id horario "+hr.getId_horario());
+            daos=new DaoServicio();
+            try {
+                hr=daos.leerHorario(hr);
+                if(hr != null){
+                    request.setAttribute("horario", hr);
+                }else{
+                    request.setAttribute("msje", "No se encontro el horario");
+                }
+            } catch (Exception e) {
+                System.out.println("el error al encontrar el horaio es "+e);
+            }
+        }else{
+            request.setAttribute("msje", "No tiene el parametro necesario");
+        }
+        try {
+            this.distritos(request);
+            this.marcas(request);
+            this.mostrarEspecialidad(request);
+            this.getServletConfig().getServletContext().getRequestDispatcher("/citas/solicitarCitaSinH.jsp").forward(request, response);
+            System.out.println("se envio a edita");
+        } catch (Exception e) {
+            System.out.println("erro de obtener cliente "+e);
+        }
+    }
 }

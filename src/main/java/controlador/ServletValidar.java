@@ -23,6 +23,7 @@ import modelo.DaoCliente;
 import modelo.DaoDistrito;
 import modelo.DaoEncargado;
 import modelo.DaoEspecialidad;
+import modelo.DaoHoja;
 import modelo.DaoRepuesto;
 import modelo.DaoServicio;
 import modelo.DaoTecnico;
@@ -31,6 +32,7 @@ import modelo.Detalles;
 import modelo.Distrito;
 import modelo.Encargado;
 import modelo.Especialidad;
+import modelo.Hoja;
 import modelo.Horario;
 import modelo.Marca;
 import modelo.Persona;
@@ -183,6 +185,9 @@ public class ServletValidar extends HttpServlet {
                             agregarCarrito(request);
                         } else if (shear.equals("procesar")){
                             registrarDetallesServicio(request, response);
+                            total=0.0;
+                            lista =new ArrayList<Detalles>();
+                            request.getRequestDispatcher("./mostrarServiciosDomicilio.jsp").forward(request, response);
                         } 
                         request.getRequestDispatcher("./detallerServicio.jsp").forward(request, response);
                         break;
@@ -201,6 +206,8 @@ public class ServletValidar extends HttpServlet {
                             agregarCarrito(request);
                         } else if (shear.equals("procesar")){
                             registrarDetallesServicioDomi(request, response);
+                            total=0.0;
+                            lista =new ArrayList<Detalles>();
                         } 
                         request.getRequestDispatcher("./detallesServicioDomi.jsp").forward(request, response);
                         break;
@@ -218,6 +225,12 @@ public class ServletValidar extends HttpServlet {
                         break;
                     case "mostrarMisHorarios":
                         mostrarMisHorarios(request, response);
+                    case "mostrarHojaServicioDomi":
+                        mostrarHojasDomi(request, response);
+                        break;
+                    case "mostrarHojaTaller":
+                        mostrarHojasTaller(request, response);
+                        break;
                     default:
                         this.getServletConfig().getServletContext().getRequestDispatcher("./login.jsp").forward(request, response);
                         break;
@@ -1015,8 +1028,8 @@ public class ServletValidar extends HttpServlet {
 
     private void formCarritoServ(HttpServletRequest request, HttpServletResponse response) {
         try {
-            lista = new ArrayList<>();
             request.setAttribute("lista", lista);
+            lista = new ArrayList<>();
             this.repuestos(request);
             this.getServletConfig().getServletContext()
                     .getRequestDispatcher("/detallerServicio.jsp").forward(request, response);
@@ -1027,8 +1040,8 @@ public class ServletValidar extends HttpServlet {
     
     private void formCarritoServDom(HttpServletRequest request, HttpServletResponse response) {
         try {
-            lista = new ArrayList<>();
             request.setAttribute("lista", lista);
+            lista = new ArrayList<>();
             this.repuestos(request);
             this.getServletConfig().getServletContext()
                     .getRequestDispatcher("/detallesServicioDomi.jsp").forward(request, response);
@@ -1045,6 +1058,7 @@ public class ServletValidar extends HttpServlet {
         double costo = 0;
         int cantidad;
         double subtotal;
+        total=0.0;
         item = item + 1;
         idr = Integer.parseInt(request.getParameter("txtidrepuesto2"));
         ids = idservicio;
@@ -1063,6 +1077,7 @@ public class ServletValidar extends HttpServlet {
         lista.add(detalle);
         for (int i = 0; i < lista.size(); i++) {
             total = total + lista.get(i).getSubTotal();
+            System.out.println("i "+total);
         }
         System.out.println("id " + idservicio);
         request.setAttribute("totalpagar", total);
@@ -1070,6 +1085,7 @@ public class ServletValidar extends HttpServlet {
     }
 
     private void leerServicio(HttpServletRequest request, HttpServletResponse response) {
+        repuestos(request);
         DaoServicio daos;
         Servicio serv;
         if (request.getParameter("idservicio") != null) {
@@ -1100,6 +1116,7 @@ public class ServletValidar extends HttpServlet {
     }
     
     private void leerServicioDomi(HttpServletRequest request, HttpServletResponse response) {
+        repuestos(request);
         DaoServicio daos;
         Servicio serv;
         if (request.getParameter("idservicio") != null) {
@@ -1165,6 +1182,7 @@ public class ServletValidar extends HttpServlet {
             detalle.setSubTotal(lista.get(i).getSubTotal());
             daos.registrarDetallesDomi(detalle);
         }
+        
     }
 
     private void cambiarEstado(HttpServletRequest request, HttpServletResponse response) {
@@ -1259,5 +1277,28 @@ public class ServletValidar extends HttpServlet {
             this.getServletConfig().getServletContext().getRequestDispatcher("/seleccionarHorarios.jsp").forward(request, response);
         } catch (Exception e) {
         }
+    }
+
+    private void mostrarHojasDomi(HttpServletRequest request, HttpServletResponse response) {
+        DaoHoja daoh = new DaoHoja();
+        List<Hoja> hoj = null;
+        try {
+            hoj = daoh.mostrarHojasDomicilio();
+            request.setAttribute("listarHojas", hoj);
+            System.out.println("lista tecnicos");
+        } catch (Exception e) {
+            request.setAttribute("msje", "no se puedo listar");
+        } finally {
+            daoh = null;
+        }
+        try {
+            System.out.println("entro en redireccion");
+            this.getServletConfig().getServletContext().getRequestDispatcher("/mostrarHojasServicio.jsp").forward(request, response);
+        } catch (Exception e) {
+        }
+    }
+
+    private void mostrarHojasTaller(HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

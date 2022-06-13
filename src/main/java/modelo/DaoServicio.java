@@ -468,6 +468,16 @@ public class DaoServicio {
         } catch (Exception e) {
             System.out.println("el error al ACTUALIZAR servivio es "+e);
         }
+        String sql2="INSERT INTO `hoja_servicio_domi` (`id_hoja`, `id_servicio`, `estado_activ`) VALUES (NULL, '"+id+"', '1');";
+        try {
+            con=cn.Conexion();
+            PreparedStatement stm = con.prepareStatement(sql2);
+            stm.execute();
+            con.commit();
+            con.close();
+        } catch (Exception e) {
+            System.out.println("el error al llenar hoja servivio es "+e);
+        }
     }
     public void cambiarEstado(Servicio servicio){
         System.out.println("---"+servicio.isEstado_activ());

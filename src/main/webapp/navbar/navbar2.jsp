@@ -107,7 +107,31 @@
                             <span class="pcoded-mcaret"></span>
                         </a>
                     </li>
-
+                    <li class="pcoded-hasmenu " id="iluminar">
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="ti-direction-alt"></i><b>M</b></span>
+                            <span class="pcoded-mtext" data-i18n="nav.menu-levels.main">Mostra Servicios</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="">
+                                <a href="ServletValidar?accion=listarTodosServicios" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext"
+                                        data-i18n="nav.menu-levels.menu-level-21">Mostrar Servicios Taller</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="ServletValidar?accion=listarServiciosDomicilio" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext"
+                                        data-i18n="nav.menu-levels.menu-level-21">Mostrar Servicios Domicilio</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
 
                 <div class="pcoded-navigation-label" data-i18n="nav.category.forms">Registrar</div>
@@ -130,6 +154,13 @@
                         <a href="ServletValidar?accion=registrarcliente" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="ti-layers"></i><b>FC</b></span>
                             <span class="pcoded-mtext" data-i18n="nav.form-components.main">Cliente</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                    <li id="iluminar">
+                        <a href="ServletValidar?accion=registrarcliente" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="ti-layers"></i><b>FC</b></span>
+                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Repuesto</span>
                             <span class="pcoded-mcaret"></span>
                         </a>
                     </li>
@@ -260,3 +291,4 @@
         <!-- custom js -->
         <script type="text/javascript" src="./assets/pages/dashboard/custom-dashboard.js"></script>
         <script type="text/javascript" src="./assets/js/script.js "></script>
+        

@@ -87,6 +87,7 @@
                                     </div>
                                 </div>
                                 <div class="card-block table-border-style">
+                                    <input type="hidden" name="txtidtec" value="${usuario.getId()}">
                                     <div class="table-responsive">
                                         <table class="table table-hover">
                                             <thead>

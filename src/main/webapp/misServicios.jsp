@@ -75,7 +75,7 @@
                                     <div class="row align-items-center">
                                         <div class="col-md-8">
                                             <div class="page-header-title">
-                                                <h5 class="m-b-10">Home</h5>
+                                                <h5 class="m-b-10">Mis Servicios</h5>
                                                 <p class="m-b-0">Bienvenidos al sistema Taller UTP</p>
                                             </div>
                                         </div>
@@ -119,11 +119,14 @@
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>Nro Serie</th>
+                                                    <th>Codigo</th>
+                                                    <th>Fecha</th>
+                                                    <th>Hora inicio</th>
+                                                    <th>Hora fin</th>
                                                     <th>Marca</th>
                                                     <th>Descripción</th>
+                                                    <th>Tecnico</th>
                                                     <th>Estado</th>
-                                                    <th>Fecha Hora</th>
                                                     <th>Accion</th>
                                                 </tr>
                                             </thead>
@@ -131,17 +134,19 @@
                                                 <c:forEach var="cliente" items="${listaServicios}" varStatus="status">
                                                     <tr>
                                                         <td>${status.index + 1}</td>
-                                                        <td>${cliente.getAparato().getNroSerie()}</td>
-                                                        <td>${cliente.getAparato().getMarca().descripcion}</td>
-                                                        <td>${cliente.getAparato().descAparato}</td>
+                                                        <td>${cliente.getId_servicio()}</td>
+                                                        <td>${cliente.getHorario().getFecha()}</td>
+                                                        <td>${cliente.getHorario().getHoraini()}</td>
+                                                        <td>${cliente.getHorario().getHorafin()}</td>
+                                                        <td>${cliente.getCita().getAparato().getMarca().descripcion}</td>
+                                                        <td>${cliente.getCita().getAparato().descAparato}</td>
+                                                        <td>${cliente.getTenico().getNombres()} ${cliente.getTenico().getApellidos()}</td>
                                                         <c:if test="${cliente.estado_activ == true}">
                                                             <td><span class="badge bg-green active" style="color: #000;background: #198754">Servicio en proceso</span></td>
                                                         </c:if>
                                                         <c:if test="${cliente.estado_activ == false}">
                                                             <td><span class="badge bg-red active" style="color: #000;background: #dc3545">Servicio en hecho</span></td>
                                                         </c:if>
-                                                        <td>${cliente.fecha_hora}</td>
-                                                        
                                                         <td>
                                                             <button type="button" class="btn btn-primary fa fa-times" data-toggle="tooltip"  title="Desabilitar" data-original-title="Desabilitar" style="background: #771A1A; border-color: #771A1A"></button>
                                                             <button type="button" class="btn btn-primary fa fa-pencil" data-toggle="tooltip"  title="Editar" data-original-title="Editar" style="background: #771A1A; border-color: #771A1A"></button>

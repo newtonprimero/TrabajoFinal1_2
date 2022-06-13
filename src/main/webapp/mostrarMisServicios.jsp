@@ -112,7 +112,8 @@
                                     <div class="table-responsive">
                                         <form action="ServletValidar?accion=misservicios" method="post">
                                             <input id="prodId" name="txtidper" type="hidden" value="${usuario.id_persona}" >
-                                            <button class="btn btn-primary waves-effect waves-light" type="submit" name="btnVUS" value="BUSCAR"> Mostrar Servicios </button>
+                                            <button class="btn btn-primary waves-effect waves-light" type="submit" name="shear" value="citas"> Mostrar Ciras</button>
+                                            <button class="btn btn-primary waves-effect waves-light" type="submit" name="shear" value="misServi"> Mostrar Servicios</button>
                                         </form>
                                         <table class="table table-hover">
                                             <thead>

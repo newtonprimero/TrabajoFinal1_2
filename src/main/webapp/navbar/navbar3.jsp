@@ -107,31 +107,14 @@
                             <span class="pcoded-mcaret"></span>
                         </a>
                     </li>
-                    <li class="pcoded-hasmenu " id="iluminar">
-                        <a href="javascript:void(0)" class="waves-effect waves-dark">
-                            <span class="pcoded-micon"><i class="ti-direction-alt"></i><b>M</b></span>
-                            <span class="pcoded-mtext" data-i18n="nav.menu-levels.main">Mostra Servicios</span>
+                    <li id="iluminar">
+                        <a href="ServletValidar?accion=listarTodosServicios" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="ti-layers"></i><b>FC</b></span>
+                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Mostrar Servicios</span>
                             <span class="pcoded-mcaret"></span>
                         </a>
-                        <ul class="pcoded-submenu">
-                            <li class="">
-                                <a href="ServletValidar?accion=listarTodosServicios" class="waves-effect waves-dark">
-                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                    <span class="pcoded-mtext"
-                                        data-i18n="nav.menu-levels.menu-level-21">Mostrar Servicios Taller</span>
-                                    <span class="pcoded-mcaret"></span>
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="ServletValidar?accion=listarServiciosDomicilio" class="waves-effect waves-dark">
-                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                    <span class="pcoded-mtext"
-                                        data-i18n="nav.menu-levels.menu-level-21">Mostrar Servicios Domicilio</span>
-                                    <span class="pcoded-mcaret"></span>
-                                </a>
-                            </li>
-                        </ul>
                     </li>
+
                 </ul>
 
                 <div class="pcoded-navigation-label" data-i18n="nav.category.forms">Registrar</div>
@@ -262,11 +245,11 @@
                 cambiarcolor();
             };
         </script>
-        <script type="text/javascript" src="./assets/js/jquery/jquery.min.js"></script>
+        
         <script type="text/javascript" src="./assets/js/jquery-ui/jquery-ui.min.js "></script>
         <script type="text/javascript" src="./assets/js/popper.js/popper.min.js"></script>
-        <script type="text/javascript" src="./assets/js/bootstrap/js/bootstrap.min.js "></script>
         <script type="text/javascript" src="./assets/pages/widget/excanvas.js "></script>
+        <script type="text/javascript" src="./assets/js/bootstrap/js/bootstrap.min.js "></script>
         <!-- waves js -->
         <script src="./assets/pages/waves/js/waves.min.js"></script>
         <!-- jquery slimscroll js -->

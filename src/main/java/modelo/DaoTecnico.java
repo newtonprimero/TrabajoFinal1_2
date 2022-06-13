@@ -175,4 +175,49 @@ public class DaoTecnico {
             System.out.println("el error al ACTUALIZAR USER tecn es "+e);
         }
     }
+    
+    public List<Servicio> listarMisHorarios(int idt){
+        List<Servicio> lst = new ArrayList<Servicio>();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDateTime actual=LocalDateTime.now();
+        LocalDateTime mañana=actual.plusDays(5);
+        String hoy=actual.format(dtf);
+        String manana=mañana.format(dtf);
+        String sql="SELECT horarios.id_horario,horarios.fecha, horarios.hora_ini, horarios.hora_fin,distrito.nombre_distrito, cita.direccion, persona.nombres, persona.apellidos, persona.dni, horarios.estado_activ,servicio_domicilio.id_servicio_domi,servicio_domicilio.estado_activ FROM `horarios`INNER JOIN servicio_domicilio ON servicio_domicilio.id_horario=horarios.id_horario INNER JOIN cita ON cita.id_cita=servicio_domicilio.id_cita INNER JOIN distrito ON distrito.id_distrito=cita.id_distrito INNER JOIN persona ON persona.id_persona=cita.id_persona "
+                + " WHERE horarios.fecha BETWEEN '"+ hoy +"' AND '"+ manana +"' AND horarios.estado_activ=0 AND horarios.id_persona="+idt;
+        try {
+            con=cn.Conexion();
+            ps=con.prepareStatement(sql);
+            rs=ps.executeQuery();
+            while (rs.next()) {
+                Horario hora=new Horario();
+                hora.setId_horario(rs.getInt(1));
+                hora.setFecha(rs.getString(2));
+                hora.setHoraini(rs.getString(3));
+                hora.setHorafin(rs.getString(4));
+                Distrito distr=new Distrito();
+                distr.setNombreDistrito(rs.getString(5));
+                Cita cita=new Cita();
+                cita.setDireccion(rs.getString(6));
+                Persona perso=new Persona();
+                perso.setNombres(rs.getString(7));
+                perso.setApellidos(rs.getString(8));
+                perso.setDni(rs.getString(9));
+                hora.setEstado_activ(rs.getBoolean(10));
+                Servicio servi=new Servicio();
+                servi.setId_servicio(rs.getInt(11));
+                servi.setEstado_activ(rs.getBoolean(12));
+                cita.setDiaDistrito(distr);
+                cita.setPerso(perso);
+                servi.setCita(cita);
+                servi.setHorario(hora);
+                lst.add(servi);
+                System.out.println("Nombre tecnico "+perso.getNombres()+" "+ perso.getApellidos());
+            }
+            con.close();
+        } catch (Exception e) {
+            System.out.println("el error al mostrar "+e);
+        }
+        return lst;
+    }
 }

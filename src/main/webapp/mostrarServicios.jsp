@@ -1,8 +1,9 @@
 <%-- 
-    Document   : mostrarClientes
-    Created on : 22 may. 2022, 19:58:55
+    Document   : mostrarServicios
+    Created on : 10 jun. 2022, 12:59:36
     Author     : USUARIO
 --%>
+
 <!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -67,7 +68,7 @@
                 <div class="pcoded-main-container">
                     <div class="pcoded-wrapper">
                         <% System.out.println("analisis nav bar");%>
-                        <%@include file="navbar/navbarCliente.jsp" %>
+                        <%@include file="navbar/navbar2.jsp" %>
                         <div class="pcoded-content">
                             <!-- Page-header start -->
                             <div class="page-header">
@@ -112,39 +113,58 @@
                                     <div class="table-responsive">
                                         <form action="ServletValidar?accion=misservicios" method="post">
                                             <input id="prodId" name="txtidper" type="hidden" value="${usuario.id_persona}" >
-                                            <button class="btn btn-primary waves-effect waves-light" type="submit" name="shear" value="citas"> Mostrar Ciras</button>
-                                            <button class="btn btn-primary waves-effect waves-light" type="submit" name="shear" value="misServi"> Mostrar Servicios</button>
+                                            <button class="btn btn-primary waves-effect waves-light" type="submit" name="btnVUS" value="BUSCAR"> Mostrar Servicios </button>
+                                            <button class="btn btn-primary waves-effect waves-light" type="submit" name="btnVUS" value="BUSCAR">Servicios completos</button>
+                                            <button class="btn btn-primary waves-effect waves-light" type="submit" name="btnVUS" value="BUSCAR">Servicios en Espera</button>
                                         </form>
                                         <table class="table table-hover">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>Nro Serie</th>
-                                                    <th>Marca</th>
+                                                    <th>Nro cita</th>
+                                                    <th>Datos Tecnico</th>
+                                                    <th>Fecha</th>
                                                     <th>Descripción</th>
+                                                    <th>Marca</th>
                                                     <th>Estado</th>
-                                                    <th>Fecha Hora</th>
+                                                    <th>Total</th>
                                                     <th>Accion</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <c:forEach var="cliente" items="${listaServicios}" varStatus="status">
+                                                <c:forEach var="servicio" items="${listaServicios}" varStatus="status">
                                                     <tr>
                                                         <td>${status.index + 1}</td>
-                                                        <td>${cliente.getAparato().getNroSerie()}</td>
-                                                        <td>${cliente.getAparato().getMarca().descripcion}</td>
-                                                        <td>${cliente.getAparato().descAparato}</td>
-                                                        <c:if test="${cliente.estado_activ == true}">
-                                                            <td><span class="badge bg-green active" style="color: #000;background: #198754">Servicio en proceso</span></td>
+                                                        <td>${servicio.getCita().getId_cita()}</td>
+                                                        <td>${servicio.getCita().getPerso().getNombres()} ${servicio.getCita().getPerso().getApellidos()}</td>
+                                                        <td>${servicio.getCita().getFecha_hora()}</td>
+                                                        <td>${servicio.getCita().getAparato().getDescAparato()}</td>
+                                                        <td>${servicio.getCita().getAparato().getMarca().getDescripcion()}</td>
+                                                        <c:if test="${servicio.estado_activ == true}">
+                                                            <td><span class="badge bg-red active" style="color: #000;background: #dc3545 ">Servicio en proceso</span></td>
                                                         </c:if>
-                                                        <c:if test="${cliente.estado_activ == false}">
-                                                            <td><span class="badge bg-red active" style="color: #000;background: #dc3545">Servicio en hecho</span></td>
+                                                        <c:if test="${servicio.estado_activ == false}">
+                                                            <td><span class="badge bg-red active" style="color: #000;background: #198754">Servicio Completado</span></td>
                                                         </c:if>
-                                                        <td>${cliente.fecha_hora}</td>
-                                                        
+                                                        <td>${servicio.getTotal()}</td>
+
                                                         <td>
-                                                            <button type="button" class="btn btn-primary fa fa-times" data-toggle="tooltip"  title="Desabilitar" data-original-title="Desabilitar" style="background: #771A1A; border-color: #771A1A"></button>
-                                                            <button type="button" class="btn btn-primary fa fa-pencil" data-toggle="tooltip"  title="Editar" data-original-title="Editar" style="background: #771A1A; border-color: #771A1A"></button>
+                                                            <c:choose>
+                                                                <c:when test="${servicio.estado_activ == true}">
+                                                                    <input type="hidden" id="item" value="${servicio.id_servicio}">
+                                                                    <a id="desactivarUsuario" href="ServletValidar?cambiar=desactivar&cod=${servicio.id_servicio}" >
+                                                                        <button class="btn btn-primary fa fa-check" data-toggle="tooltip"  title="Designar completo" data-original-title="Designar completo" style="background: #771A1A; border-color: #771A1A"></button></a>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                    <input type="hidden" id="item" value="${servicio.id_servicio}">
+                                                                    <a id="activarUsuario" href="ServletValidar?cambiar=activar&cod=${servicio.id_servicio}">
+                                                                        <button class="btn btn-primary fa fa-times" data-toggle="tooltip"  title="Designar en proceso" data-original-title="Designar en proceso" style="background: #771A1A; border-color: #771A1A"></button></a>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            <a href="<c:url value="ServletValidar">
+                                                                   <c:param name="accion" value="leerServicio" />
+                                                                   <c:param name="idservicio" value="${servicio.id_servicio}" />
+                                                               </c:url>"><button type="button" class="btn btn-primary fa fa-money" data-toggle="tooltip"  title="Completar" data-original-title="Completar" style="background: #771A1A; border-color: #771A1A"></button></a> 
                                                         </td>
                                                     </tr>
                                                 </c:forEach>

@@ -17,6 +17,7 @@ public class Cita {
     String fecha_hora;
     double presupuesto;
     boolean estado_activ;
+    Persona perso;
 
     public Cita() {
     }
@@ -85,6 +86,14 @@ public class Cita {
 
     public void setEstado_activ(boolean estado_activ) {
         this.estado_activ = estado_activ;
+    }
+
+    public Persona getPerso() {
+        return perso;
+    }
+
+    public void setPerso(Persona perso) {
+        this.perso = perso;
     }
     
     

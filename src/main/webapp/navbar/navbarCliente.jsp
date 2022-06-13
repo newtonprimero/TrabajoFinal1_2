@@ -86,7 +86,8 @@
                         </a>
                     </li>
                     <li id="iluminar">
-                        <a href="./mostrarMisServicios.jsp"  class="waves-effect waves-dark">
+                        <input type="hidden" name="txtidper" value="${usuario.getId_persona()}">
+                        <a href="mostrarMisServicios.jsp" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="ti-layers"></i><b>FC</b></span>
                             <span class="pcoded-mtext" data-i18n="nav.form-components.main">Todos los Servicios</span>
                             <span class="pcoded-mcaret"></span>

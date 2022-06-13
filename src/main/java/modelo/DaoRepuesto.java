@@ -8,6 +8,7 @@ import config.Conexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,5 +48,27 @@ public class DaoRepuesto {
         } catch (Exception e) {
         }
         return lst;
+    }
+    public Repuesto repuestoporID(int idr){
+        Repuesto repu=new Repuesto();
+        String sql="SELECT * FROM `repuesto` WHERE repuesto.id_repuesto LIKE "+idr;
+        try {
+            con=cn.Conexion();
+            ps=con.prepareStatement(sql);
+            rs=ps.executeQuery();
+            while (rs.next()) {
+                repu.setId_repuesto(rs.getInt(1));
+                repu.setNombre_repuesto(rs.getString(2));
+                repu.setCantidad(rs.getInt(3));
+                repu.setId_marca(rs.getInt(4));
+                repu.setPrecio(rs.getDouble(5));
+                repu.setEstado_actv(rs.getBoolean(6));
+                System.out.println("el repuesto tiene nombre "+repu.isEstado_actv());
+            }
+            con.close();
+        } catch (Exception e) {
+            System.out.println("---"+e);
+        }
+        return repu;
     }
 }

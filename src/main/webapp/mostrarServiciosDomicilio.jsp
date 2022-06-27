@@ -164,7 +164,12 @@
                                                             <a href="<c:url value="ServletValidar">
                                                                    <c:param name="accion" value="leerServicioDomi" />
                                                                    <c:param name="idservicio" value="${servicio.id_servicio}" />
-                                                               </c:url>"><button type="button" class="btn btn-primary fa fa-money" data-toggle="tooltip"  title="Completar" data-original-title="Completar" style="background: #771A1A; border-color: #771A1A"></button></a> 
+                                                               </c:url>"><button type="button" class="btn btn-primary fa fa-money" data-toggle="tooltip"  title="Completar" data-original-title="Completar" style="background: #771A1A; border-color: #771A1A"></button></a>
+                                                            <a href="<c:url value="ServletValidar">
+                                                                   <c:param name="accion" value="leerServicioEdit" />
+                                                                   <c:param name="idservicio" value="${servicio.id_servicio}" />
+                                                               </c:url>"><button type="button" class="btn btn-primary fa fa-file-text" data-toggle="modal" data-target="#staticBackdrop"  title="Editar" data-original-title="Editar" style="background: #771A1A; border-color: #771A1A"></button>
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>

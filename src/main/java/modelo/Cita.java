@@ -18,6 +18,7 @@ public class Cita {
     double presupuesto;
     boolean estado_activ;
     Persona perso;
+    int telefono;
 
     public Cita() {
     }
@@ -94,6 +95,14 @@ public class Cita {
 
     public void setPerso(Persona perso) {
         this.perso = perso;
+    }
+
+    public int getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(int telefono) {
+        this.telefono = telefono;
     }
     
     

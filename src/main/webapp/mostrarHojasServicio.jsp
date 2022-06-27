@@ -136,6 +136,11 @@
                                                         <td>${cliente.getServicio().getTotal()}</td>
                                                         <td>
                                                             <button type="button" class="btn btn-primary fa fa-file-text" data-toggle="tooltip"  title="Mostrar Hoja" data-original-title="Mostrar Hoja" style="background: #771A1A; border-color: #771A1A"></button>
+                                                            <a href="<c:url value="ServletValidar">
+                                                                        <c:param name="accion" value="leerCliente" />
+                                                                        <c:param name="idhoja" value="${cliente.id_hoja}" />
+                                                                    </c:url>"><button type="button" class="btn btn-primary fa fa-file-text" data-toggle="modal" data-target="#staticBackdrop"  title="Editar" data-original-title="Editar" style="background: #771A1A; border-color: #771A1A"></button>
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>

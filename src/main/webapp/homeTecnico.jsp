@@ -23,6 +23,12 @@
         <meta name="keywords"
               content="bootstrap, bootstrap admin template, admin theme, admin dashboard, dashboard template, admin template, responsive" />
         <meta name="author" content="codedthemes" />
+        <!-- Date tables sheart -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
+        <!-- Date tables end -->
         <!-- Favicon icon -->
         <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
         <!-- Google font-->
@@ -63,7 +69,7 @@
                     <div class="pcoded-wrapper">
 
                         <!-- navbar2 coomienzo-->
-                        <%@include file="navbar/navbarTecnico.jsp" %>
+                        <%@include file="navbar/navbarTecnico2.jsp" %>
                         <!-- navbar2 fin-->
 
                         <div class="pcoded-content">
@@ -93,51 +99,40 @@
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>Nombre</th>
-                                                    <th>Apellidos</th>
-                                                    <th>Dni</th>
-                                                    <th>Inicio</th>
-                                                    <th>Fin</th>
+                                                    <th>Distrito</th>
+                                                    <th>Direccion</th>
+                                                    <th>Fecha</th>
+                                                    <th>Hora Inicio</th>
+                                                    <th>Hora Fin</th>
+                                                    <th>Estado</th>
                                                     <th>Acción</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <th scope="row">1</th>
-                                                    <td>Mark</td>
-                                                    <td>Mark</td>
-                                                    <td>Otto</td>
-                                                    <td>20:30</td>
-                                                    <td>21:30</td>
-                                                    <td><button class="btn btn-success">Seleccionar</button> </td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">2</th>
-                                                    <td>Jacob</td>
-                                                    <td>Mark</td>
-                                                    <td>Thornton</td>
-                                                    <td>20:30</td>
-                                                    <td>21:30</td>
-                                                    <td><button class="btn btn-success">Seleccionar</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">3</th>
-                                                    <td>Larry</td>
-                                                    <td>Mark</td>
-                                                    <td>the Bird</td>
-                                                    <td>20:30</td>
-                                                    <td>21:30</td>
-                                                    <td><button class="btn btn-success">Seleccionar</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">4</th>
-                                                    <td>Larry</td>
-                                                    <td>Larry</td>
-                                                    <td>the Bird</td>
-                                                    <td>20:30</td>
-                                                    <td>21:30</td>
-                                                    <td><button class="btn btn-success">Seleccionar</button></td>
-                                                </tr>
+                                                <c:forEach var="hora" items="${listahoraselct}" varStatus="status">
+                                                    <tr>
+                                                        <td>${status.index + 1}</td>
+                                                        <td>${hora.getCita().getDiaDistrito().nombreDistrito}</td>
+                                                        <td>${hora.getCita().direccion}</td>
+                                                        <td>${hora.getHorario().fecha}</td>
+                                                        <td>${hora.getHorario().horaini}</td>
+                                                        <td>${hora.getHorario().horafin}</td>
+                                                        <c:if test="${hora.estado_activ == true}">
+                                                            <td><span class="badge bg-green active" style="color: #000;background: #198754">Diponible</span></td>
+                                                        </c:if>
+                                                        <c:if test="${hora.estado_activ == false}">
+                                                            <td><span class="badge bg-red active" style="color: #000;background: #dc3545">Pendiente</span></td>
+                                                        </c:if>
+                                                        <td>
+                                                            <button type="button" class="btn btn-primary fa fa-times" data-toggle="modal" data-target="#staticBackdrop"  title="Cancelar" data-original-title="Cancelar" style="background: #771A1A; border-color: #771A1A"></button>
+                                                            <a href="<c:url value="ServletValidar">
+                                                                   <c:param name="accion" value="leerServicioDomi" />
+                                                                   <c:param name="idservicio" value="${hora.id_servicio}" />
+                                                               </c:url>"><button type="button" class="btn btn-primary fa fa-money" data-toggle="modal" data-target="#staticBackdrop"  title="Completar" data-original-title="Completar" style="background: #771A1A; border-color: #771A1A"></button>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
                                             </tbody>
                                         </table>
                                     </div>

@@ -55,7 +55,7 @@ public class ServletValidar extends HttpServlet {
     Detalles detalle;
     List<Detalles> lista = new ArrayList<>();
     static int idservicio;
-        double total = 0.0;
+    double total = 0.0;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -71,6 +71,7 @@ public class ServletValidar extends HttpServlet {
         String accion = request.getParameter("accion");
         String shear = request.getParameter("shear");
         System.out.println("leega al process");
+        DaoTecnico daoh = new DaoTecnico();
         try {
             if (accion != null) {
                 switch (accion) {
@@ -82,6 +83,11 @@ public class ServletValidar extends HttpServlet {
                     case "listarclientes":
                         System.out.println("entro a validar");
                         listarClientes(request, response);
+                        try {
+                            System.out.println("entro en redireccion");
+                            this.getServletConfig().getServletContext().getRequestDispatcher("/mostrarClientes.jsp").forward(request, response);
+                        } catch (Exception e) {
+                        }
                         break;
                     case "listartecnicos":
                         listarTecnicos(request, response);
@@ -102,6 +108,9 @@ public class ServletValidar extends HttpServlet {
                     case "leerHorario":
                         leerSchedule(request, response);
                         break;
+                    case "formasignarHorario":
+                        formasignarHorario(request, response);
+                        break;
                     case "registrarcliente":
                         formRegistrarCliente(request, response);
                         break;
@@ -113,18 +122,50 @@ public class ServletValidar extends HttpServlet {
                         break;
                     case "registrarcita":
                         registrarCita(request, response);
+                        this.getServletConfig().getServletContext().getRequestDispatcher("/homeCliente.jsp").forward(request, response);
                         break;
                     case "registrarcita2":
                         System.out.println("llegar a case");
                         registrarCitasinhora(request, response);
                         break;
+                    case "registrarCitaTaller":
+                        System.out.println("llega aca aca");
+                        registrarCitaTaller(request, response);
+                        System.out.println("termina aca");
+                        mostrarServiciosTecnico(request, response);
+                        this.getServletConfig().getServletContext().getRequestDispatcher("/misAtenciones.jsp").forward(request, response);
+                        break;
                     case "misservicios":
                         if (shear.equals("citas")) {
                             listarMisServicios(request, response);
-                        }else if(shear.equals("misServi")){
+                        } else if (shear.equals("misServi")) {
                             mostrarMisServicios(request, response);
                         }
-                        
+                        break;
+                    case "buscartecnicohora":
+                        DaoTecnico daoc;
+                        Tecnicos cli;
+                        if (request.getParameter("idtecnico") != null) {
+                            cli = new Tecnicos();
+                            cli.setId_tecn(Integer.parseInt(request.getParameter("idtecnico")));
+                            System.out.println("id tecn " + cli.getId_tecn());
+                            daoc = new DaoTecnico();
+                            try {
+                                cli = daoc.leerTecnico(cli);
+                                if (cli != null) {
+                                    request.setAttribute("tecnico", cli);
+                                } else {
+                                    request.setAttribute("msje", "No se encontro el Tecnico");
+                                }
+                            } catch (Exception e) {
+                                System.out.println("el error al encontrar el tecnico es " + e);
+                            }
+                        } else {
+                            request.setAttribute("msje", "No tiene el parametro necesario");
+                        }
+                        listarHorariosDni(request, response);
+                        formasignarHorario(request, response);
+                        request.getRequestDispatcher("./asignacionHorarios.jsp").forward(request, response);
                         break;
                     case "buscardni":
                         System.out.println("llegar a buscar tec");
@@ -140,8 +181,15 @@ public class ServletValidar extends HttpServlet {
                     case "registrarTecnico":
                         registrarTecnico(request, response);
                         break;
-                    case "leerCliente":
+                    case "leerClienteEdit":
                         leerClient(request, response);
+                        try {
+                            this.distritos(request);
+                            this.getServletConfig().getServletContext().getRequestDispatcher("/editar/editarCliente.jsp").forward(request, response);
+                            System.out.println("se envio a edita");
+                        } catch (Exception e) {
+                            System.out.println("erro de obtener cliente " + e);
+                        }
                         break;
                     case "actualizarCliente":
                         actualizarClient(request, response);
@@ -179,36 +227,37 @@ public class ServletValidar extends HttpServlet {
                                 DaoRepuesto daor = new DaoRepuesto();
                                 repuest = daor.repuestoporID(id);
                                 request.setAttribute("repuesto", repuest);
-                            }else {
-                                request.getRequestDispatcher("./detallerServicio.jsp").forward(request, response);}
+                            } else {
+                                request.getRequestDispatcher("./detallerServicio.jsp").forward(request, response);
+                            }
                         } else if (shear.equals("agregarRepuesto")) {
                             agregarCarrito(request);
-                        } else if (shear.equals("procesar")){
+                        } else if (shear.equals("procesar")) {
                             registrarDetallesServicio(request, response);
-                            total=0.0;
-                            lista =new ArrayList<Detalles>();
-                            request.getRequestDispatcher("./mostrarServiciosDomicilio.jsp").forward(request, response);
-                        } 
+                            total = 0.0;
+                            lista = new ArrayList<Detalles>();
+                            listarTodosServicios(request, response);
+                        }
                         request.getRequestDispatcher("./detallerServicio.jsp").forward(request, response);
                         break;
                     case "nuevoRepuestoDomi":
                         this.repuestos(request);
+                        System.out.println("el id del repuesto en busqueda es" + request.getParameter("txtidrepuesto"));
                         if (shear.equals("buscarRepuesto")) {
                             request.setAttribute("lista", lista);
-                            if (request.getParameter("txtidrepuesto") != "") {
-                                int id = Integer.parseInt(request.getParameter("txtidrepuesto"));
-                                DaoRepuesto daor = new DaoRepuesto();
-                                repuest = daor.repuestoporID(id);
-                                request.setAttribute("repuesto", repuest);
-                            }else {
-                                request.getRequestDispatcher("./detallesServicioDomi.jsp").forward(request, response);}
+                            System.out.println("el id del repuesto en busqueda es" + request.getParameter("txtidrepuesto"));
+                            int id = Integer.parseInt(request.getParameter("txtidrepuesto"));
+                            DaoRepuesto daor = new DaoRepuesto();
+                            repuest = daor.repuestoporID(id);
+                            request.setAttribute("repuesto", repuest);
                         } else if (shear.equals("agregarRepuesto")) {
                             agregarCarrito(request);
-                        } else if (shear.equals("procesar")){
+                        } else if (shear.equals("procesar")) {
                             registrarDetallesServicioDomi(request, response);
-                            total=0.0;
-                            lista =new ArrayList<Detalles>();
-                        } 
+                            total = 0.0;
+                            lista = new ArrayList<Detalles>();
+                            listarTodosServiciosDomicilio(request, response);
+                        }
                         request.getRequestDispatcher("./detallesServicioDomi.jsp").forward(request, response);
                         break;
                     case "leerServicio":
@@ -225,22 +274,169 @@ public class ServletValidar extends HttpServlet {
                         break;
                     case "mostrarMisHorarios":
                         mostrarMisHorarios(request, response);
+                        try {
+                            System.out.println("entro en redireccion");
+                            this.getServletConfig().getServletContext().getRequestDispatcher("/misHorarios.jsp").forward(request, response);
+                        } catch (Exception e) {
+                        }
                     case "mostrarHojaServicioDomi":
                         mostrarHojasDomi(request, response);
                         break;
                     case "mostrarHojaTaller":
                         mostrarHojasTaller(request, response);
                         break;
+                    case "leerhoja":
+                        leerHoja(request, response);
+                        break;
+                    case "mostrarMisAtenciones":
+                        mostrarServiciosTecnico(request, response);
+                        this.getServletConfig().getServletContext().getRequestDispatcher("/misAtenciones.jsp").forward(request, response);
+                        break;
+                    case "mostrarMisAtencionesPen":
+                        
+                        List<Servicio> selch;
+                        try {
+                            selch = daoh.listarServiciosTcnAll(ideper, 2);
+                            System.out.println("--" + ideper);
+                            request.setAttribute("listahoraselct", selch);
+                            System.out.println("lista horarios servicio" + selch);
+                        } catch (Exception e) {
+                            request.setAttribute("msje", "no se puedo listar");
+                            System.out.println("eerro " + e);
+                        } finally {
+                            daoh = null;
+                        }
+                        this.getServletConfig().getServletContext().getRequestDispatcher("/misAtenciones.jsp").forward(request, response);
+                        break;
+                        case "mostrarMisAtencionesCompl":
+                        DaoTecnico daohh = new DaoTecnico();
+                        List<Servicio> selchc;
+                        try {
+                            selchc = daohh.listarServiciosTcnAll(ideper, 3);
+                            System.out.println("--" + ideper);
+                            request.setAttribute("listahoraselct", selchc);
+                        } catch (Exception e) {
+                            request.setAttribute("msje", "no se puedo listar");
+                            System.out.println("eerro " + e);
+                        } finally {
+                            daoh = null;
+                        }
+                        this.getServletConfig().getServletContext().getRequestDispatcher("/misAtenciones.jsp").forward(request, response);
+                        break;
+                    case "mostrarMisAtencionesDomi":
+                        try {
+                            selch = daoh.listarServiciosTcnDomi(ideper, 1);
+                            System.out.println("--" + ideper);
+                            request.setAttribute("listahoraselct", selch);
+                            System.out.println("lista horarios servicio" + selch);
+                        } catch (Exception e) {
+                            request.setAttribute("msje", "no se puedo listar");
+                            System.out.println("eerro " + e);
+                        } finally {
+                            daoh = null;
+                        }
+                        this.getServletConfig().getServletContext().getRequestDispatcher("/misAtencionesDomicilio.jsp").forward(request, response);
+                        break;
+                    case "mostrarMisAtencionesPenDomi":
+                        List<Servicio> selchh;
+                        try {
+                            selchh = daoh.listarServiciosTcnDomi(ideper, 2);
+                            System.out.println("--" + ideper);
+                            request.setAttribute("listahoraselct", selchh);
+                            System.out.println("lista horarios servicio" + selchh);
+                        } catch (Exception e) {
+                            request.setAttribute("msje", "no se puedo listar");
+                            System.out.println("eerro " + e);
+                        } finally {
+                            daoh = null;
+                        }
+                        this.getServletConfig().getServletContext().getRequestDispatcher("/misAtencionesDomicilio.jsp").forward(request, response);
+                        break;
+                    case "mostrarMisAtencionesComplDomi":
+                        try {
+                            selchc = daoh.listarServiciosTcnDomi(ideper, 3);
+                            System.out.println("--" + ideper);
+                            request.setAttribute("listahoraselct", selchc);
+                        } catch (Exception e) {
+                            request.setAttribute("msje", "no se puedo listar");
+                            System.out.println("eerro " + e);
+                        } finally {
+                            daoh = null;
+                        }
+                        this.getServletConfig().getServletContext().getRequestDispatcher("/misAtencionesDomicilio.jsp").forward(request, response);
+                        break;
+                    case "buscarRepuesto":
+                        request.setAttribute("lista", lista);
+                        System.out.println("el id del repuesto en busqueda es" + request.getParameter("txtidrepuesto"));
+                        int id = Integer.parseInt(request.getParameter("txtidrepuesto"));
+                        DaoRepuesto daor = new DaoRepuesto();
+                        repuest = daor.repuestoporID(id);
+                        request.setAttribute("repuesto", repuest);
+                        this.repuestos(request);
+                        request.getRequestDispatcher("./detallesServicioDomi.jsp").forward(request, response);
+                        break;
+                    case "buscarRepuestoTaller":
+                        request.setAttribute("lista", lista);
+                        System.out.println("el id del repuesto en busqueda es" + request.getParameter("txtidrepuesto"));
+                        id = Integer.parseInt(request.getParameter("txtidrepuesto"));
+                        daor = new DaoRepuesto();
+                        repuest = daor.repuestoporID(id);
+                        request.setAttribute("repuesto", repuest);
+                        this.repuestos(request);
+                        request.getRequestDispatcher("./detallerServicio.jsp").forward(request, response);
+                        break;
+                    case "leerServicioEdit":
+                        leerServiciosEdit(request, response);
+                        break;
+                    case "atencionTaller":
+                        listarClientes(request, response);
+                        try {
+                            System.out.println("entro en redireccion");
+                            this.getServletConfig().getServletContext().getRequestDispatcher("/atencionTaller.jsp").forward(request, response);
+                        } catch (Exception e) {
+                        }
+                        break;
+                    case "leerCliente":
+                        leerClient(request, response);
+                        marcas(request);
+                        try {
+                            System.out.println("entro en redireccion");
+                            this.getServletConfig().getServletContext().getRequestDispatcher("/crearServicio.jsp").forward(request, response);
+                        } catch (Exception e) {
+                        }
+                        break;
+                    case "agregarPresu":
+                        System.out.println("llega a agre presu");
+                        int idcit = 0;
+                        double presu = Double.parseDouble(request.getParameter("txtpresupuesto"));
+                        idcit = Integer.parseInt(request.getParameter("txtidcita"));
+                        System.out.println("---" + idcit);
+                        DaoServicio daos = new DaoServicio();
+                        daos.actualizarPresu(idcit, presu);
+                        mostrarServiciosTecnico(request, response);
+                        request.getRequestDispatcher("/misAtenciones.jsp").forward(request, response);
+                        break;
+                    case "cancelarServicioTaller":
+                        System.out.println("llega a agre presu");
+                        int idser = 0;
+                        double totalcancel = Double.parseDouble(request.getParameter("txttotal"));
+                        idser = Integer.parseInt(request.getParameter("txtidservi"));
+                        System.out.println("---" + idser);
+                        DaoServicio daoss = new DaoServicio();
+                        daoss.cancelarServicioTaller(idser, totalcancel);
+                        mostrarServiciosTecnico(request, response);
+                        request.getRequestDispatcher("/misAtenciones.jsp").forward(request, response);
+                        break;
                     default:
                         this.getServletConfig().getServletContext().getRequestDispatcher("./login.jsp").forward(request, response);
                         break;
                 }
 
-            } else if(request.getParameter("cambiar") != null){
+            } else if (request.getParameter("cambiar") != null) {
                 cambiarEstado(request, response);
-            }else if(request.getParameter("cambiar2") != null){
-                cambiarEstadoDomi(request, response);}
-            else{
+            } else if (request.getParameter("cambiar2") != null) {
+                cambiarEstadoDomi(request, response);
+            } else {
                 response.sendRedirect("./login.jsp");
             }
         } catch (Exception e) {
@@ -321,7 +517,7 @@ public class ServletValidar extends HttpServlet {
         Usuario usu;
         usu = this.obtenerUsuario(request);
         usu = daou.validar(usu);
-        ideper=usu.getId();
+        ideper = usu.getId();
         System.out.println("el usuario en verificar es " + usu);
         if (usu != null && usu.getId_rol() == 1) {
             sesion = request.getSession();
@@ -331,6 +527,7 @@ public class ServletValidar extends HttpServlet {
         } else if (usu != null && usu.getId_rol() == 2) {
             sesion = request.getSession();
             sesion.setAttribute("usuario", usu);
+            mostrarMisHorarios(request, response);
             this.getServletConfig().getServletContext().getRequestDispatcher("/homeTecnico.jsp").forward(request, response);
         } else if (usu != null && usu.getId_rol() == 3) {
             sesion = request.getSession();
@@ -360,11 +557,7 @@ public class ServletValidar extends HttpServlet {
         } finally {
             daoc = null;
         }
-        try {
-            System.out.println("entro en redireccion");
-            this.getServletConfig().getServletContext().getRequestDispatcher("/mostrarClientes.jsp").forward(request, response);
-        } catch (Exception e) {
-        }
+
     }
 
     private Usuario obtenerUsuario(HttpServletRequest request) {
@@ -538,11 +731,11 @@ public class ServletValidar extends HttpServlet {
                 ci.setDiaDistrito(dis);
                 ci.setDireccion(request.getParameter("txtdireccion"));
                 ci.setFecha_hora(request.getParameter("inputfecha"));
+                ci.setPresupuesto(Integer.parseInt(request.getParameter("txtpresupuesto")));
                 try {
                     System.out.println("entro al if de cita");
                     daose = new DaoServicio();
                     daose.nuevoCita(ci);
-                    this.getServletConfig().getServletContext().getRequestDispatcher("/homeCliente.jsp").forward(request, response);
                 } catch (Exception e) {
                     System.out.println("error al registrar " + e);
                 }
@@ -575,7 +768,78 @@ public class ServletValidar extends HttpServlet {
                     System.out.println("entro en el else");
                     daose = new DaoServicio();
                     daose.nuevoCitaHorario(ci, horaa);
-                    this.getServletConfig().getServletContext().getRequestDispatcher("/homeCliente.jsp").forward(request, response);
+                } catch (Exception e) {
+                    System.out.println("error al registrar " + e);
+                }
+            }
+        }
+    }
+
+    private void registrarCitaTaller(HttpServletRequest request, HttpServletResponse response) {
+        DaoServicio daose;
+        Cita ci = null;
+        Distrito dis;
+        Marca mar;
+        Aparato apa;
+        int idtec;
+        if (request.getParameter("inputfecha") != null) {
+            if (request.getParameter("txridper") != null && request.getParameter("cbomarca") != null
+                    && request.getParameter("txtnroserie") != null && request.getParameter("txtdescripcion") != null
+                    && request.getParameter("inputfecha") != null) {
+                idtec = Integer.parseInt(request.getParameter("txtidtec"));
+                ci = new Cita();
+                ci.setId_persona(Integer.parseInt(request.getParameter("txridper")));
+                mar = new Marca();
+                mar.setId_marca(Integer.parseInt(request.getParameter("cbomarca")));
+                apa = new Aparato();
+                apa.setNroSerie(request.getParameter("txtnroserie"));
+                apa.setDescAparato(request.getParameter("txtdescripcion"));
+                apa.setMarca(mar);
+                ci.setAparato(apa);
+                dis = new Distrito();
+                dis.setId_distrito(Integer.parseInt(request.getParameter("cbodistrito")));
+                ci.setDiaDistrito(dis);
+                ci.setTelefono(Integer.parseInt(request.getParameter("txttelefono")));
+                ci.setDireccion(request.getParameter("txtdireccion"));
+                ci.setFecha_hora(request.getParameter("inputfecha"));
+                ci.setPresupuesto(Double.parseDouble(request.getParameter("txtpresupuesto")));
+
+                try {
+                    System.out.println("entro al if de cita");
+                    daose = new DaoServicio();
+                    daose.nuevoCitaTaller(ci, idtec);
+                } catch (Exception e) {
+                    System.out.println("error al registrar " + e);
+                }
+            }
+        } else {
+            if (request.getParameter("txridper") != null && request.getParameter("cbomarca") != null
+                    && request.getParameter("txtnroserie") != null && request.getParameter("txtdescripcion") != null
+                    && request.getParameter("cbodistrito") != null && request.getParameter("txtdireccion") != null) {
+                ci = new Cita();
+                ci.setId_persona(Integer.parseInt(request.getParameter("txridper")));
+                mar = new Marca();
+                mar.setId_marca(Integer.parseInt(request.getParameter("cbomarca")));
+                apa = new Aparato();
+                apa.setNroSerie(request.getParameter("txtnroserie"));
+                apa.setDescAparato(request.getParameter("txtdescripcion"));
+                apa.setMarca(mar);
+                ci.setAparato(apa);
+                dis = new Distrito();
+                dis.setId_distrito(Integer.parseInt(request.getParameter("cbodistrito")));
+                ci.setDiaDistrito(dis);
+                ci.setDireccion(request.getParameter("txtdireccion"));
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                LocalDateTime actual = LocalDateTime.now();
+                String hora = actual.format(dtf);
+                ci.setFecha_hora(hora);
+                Horario horaa = new Horario();
+                horaa.setId_horario(Integer.parseInt(request.getParameter("txridhora")));
+                System.out.println("el id horario es " + horaa.getId_horario());
+                try {
+                    System.out.println("entro en el else");
+                    daose = new DaoServicio();
+                    daose.nuevoCitaHorario(ci, horaa);
                 } catch (Exception e) {
                     System.out.println("error al registrar " + e);
                 }
@@ -687,7 +951,7 @@ public class ServletValidar extends HttpServlet {
         }
         try {
             System.out.println("entro en redireccion");
-            this.getServletConfig().getServletContext().getRequestDispatcher("/asignacionHorarios.jsp").forward(request, response);
+            formasignarHorario(request, response);
         } catch (Exception e) {
         }
 
@@ -708,7 +972,7 @@ public class ServletValidar extends HttpServlet {
                 daoc = new DaoEncargado();
                 daoc.ingresarHorario(cli);
                 System.out.println("el estado cita " + cli.isEstado_activ());
-                this.getServletConfig().getServletContext().getRequestDispatcher("/asignacionHorarios.jsp").forward(request, response);
+                formasignarHorario(request, response);
             } catch (Exception e) {
                 System.out.println("error al registrar " + e);
             }
@@ -829,13 +1093,7 @@ public class ServletValidar extends HttpServlet {
         } else {
             request.setAttribute("msje", "No tiene el parametro necesario");
         }
-        try {
-            this.distritos(request);
-            this.getServletConfig().getServletContext().getRequestDispatcher("/editar/editarCliente.jsp").forward(request, response);
-            System.out.println("se envio a edita");
-        } catch (Exception e) {
-            System.out.println("erro de obtener cliente " + e);
-        }
+
     }
 
     private void leerTecnic(HttpServletRequest request, HttpServletResponse response) {
@@ -990,6 +1248,7 @@ public class ServletValidar extends HttpServlet {
         } catch (Exception e) {
         }
     }
+
     private void listarTodosServiciosDomicilio(HttpServletRequest request, HttpServletResponse response) {
         DaoServicio daos = new DaoServicio();
         List<Servicio> serv = null;
@@ -1037,7 +1296,7 @@ public class ServletValidar extends HttpServlet {
             request.setAttribute("msje", e);
         }
     }
-    
+
     private void formCarritoServDom(HttpServletRequest request, HttpServletResponse response) {
         try {
             request.setAttribute("lista", lista);
@@ -1058,7 +1317,7 @@ public class ServletValidar extends HttpServlet {
         double costo = 0;
         int cantidad;
         double subtotal;
-        total=0.0;
+        total = 0.0;
         item = item + 1;
         idr = Integer.parseInt(request.getParameter("txtidrepuesto2"));
         ids = idservicio;
@@ -1077,7 +1336,7 @@ public class ServletValidar extends HttpServlet {
         lista.add(detalle);
         for (int i = 0; i < lista.size(); i++) {
             total = total + lista.get(i).getSubTotal();
-            System.out.println("i "+total);
+            System.out.println("i " + total);
         }
         System.out.println("id " + idservicio);
         request.setAttribute("totalpagar", total);
@@ -1114,7 +1373,7 @@ public class ServletValidar extends HttpServlet {
             System.out.println("erro de obtener cliente " + e);
         }
     }
-    
+
     private void leerServicioDomi(HttpServletRequest request, HttpServletResponse response) {
         repuestos(request);
         DaoServicio daos;
@@ -1124,7 +1383,7 @@ public class ServletValidar extends HttpServlet {
             serv.setId_servicio(Integer.parseInt(request.getParameter("idservicio")));
             daos = new DaoServicio();
             try {
-                serv = daos.leerServicio(serv);
+                serv = daos.leerServicioDomi(serv);
                 if (serv != null) {
                     request.setAttribute("servicio", serv);
                 } else {
@@ -1147,15 +1406,15 @@ public class ServletValidar extends HttpServlet {
     }
 
     private void registrarDetallesServicio(HttpServletRequest request, HttpServletResponse response) {
-        int idserv=idservicio;
-        System.out.println("-----"+ idserv);
-        double totald=total;
+        int idserv = idservicio;
+        System.out.println("-----" + idserv);
+        double totald = total;
         detalle.setTotal(total);
         detalle.setEstado(false);
-        DaoServicio daos=new DaoServicio();
+        DaoServicio daos = new DaoServicio();
         daos.completarServicio(idserv, totald);
         for (int i = 0; i < lista.size(); i++) {
-            detalle=new Detalles();
+            detalle = new Detalles();
             detalle.setId_repuesto(lista.get(i).getId_repuesto());
             detalle.setId_servicio(lista.get(i).getId_servicio());
             detalle.setCosto(lista.get(i).getCosto());
@@ -1164,17 +1423,17 @@ public class ServletValidar extends HttpServlet {
             daos.registrarDetalles(detalle);
         }
     }
-    
+
     private void registrarDetallesServicioDomi(HttpServletRequest request, HttpServletResponse response) {
-        int idserv=idservicio;
-        System.out.println("-----"+ idserv);
-        double totald=total;
+        int idserv = idservicio;
+        System.out.println("-----" + idserv);
+        double totald = total;
         detalle.setTotal(total);
         detalle.setEstado(false);
-        DaoServicio daos=new DaoServicio();
+        DaoServicio daos = new DaoServicio();
         daos.completarServicioDomi(idserv, totald);
         for (int i = 0; i < lista.size(); i++) {
-            detalle=new Detalles();
+            detalle = new Detalles();
             detalle.setId_repuesto(lista.get(i).getId_repuesto());
             detalle.setId_servicio(lista.get(i).getId_servicio());
             detalle.setCosto(lista.get(i).getCosto());
@@ -1182,7 +1441,7 @@ public class ServletValidar extends HttpServlet {
             detalle.setSubTotal(lista.get(i).getSubTotal());
             daos.registrarDetallesDomi(detalle);
         }
-        
+
     }
 
     private void cambiarEstado(HttpServletRequest request, HttpServletResponse response) {
@@ -1210,7 +1469,7 @@ public class ServletValidar extends HttpServlet {
         }
         this.listarTodosServicios(request, response);
     }
-    
+
     private void cambiarEstadoDomi(HttpServletRequest request, HttpServletResponse response) {
         DaoServicio dao;
         Servicio servicio;
@@ -1264,6 +1523,7 @@ public class ServletValidar extends HttpServlet {
         List<Servicio> selch;
         try {
             selch = daoh.listarMisHorarios(ideper);
+            System.out.println("--" + ideper);
             request.setAttribute("listahoraselct", selch);
             System.out.println("lista horarios servicio" + selch);
         } catch (Exception e) {
@@ -1272,10 +1532,21 @@ public class ServletValidar extends HttpServlet {
         } finally {
             daoh = null;
         }
+    }
+
+    private void mostrarServiciosTecnico(HttpServletRequest request, HttpServletResponse response) {
+        DaoTecnico daoh = new DaoTecnico();
+        List<Servicio> selch;
         try {
-            System.out.println("entro en redireccion");
-            this.getServletConfig().getServletContext().getRequestDispatcher("/seleccionarHorarios.jsp").forward(request, response);
+            selch = daoh.listarServiciosTcnAll(ideper, 1);
+            System.out.println("--" + ideper);
+            request.setAttribute("listahoraselct", selch);
+            System.out.println("lista horarios servicio" + selch);
         } catch (Exception e) {
+            request.setAttribute("msje", "no se puedo listar");
+            System.out.println("eerro " + e);
+        } finally {
+            daoh = null;
         }
     }
 
@@ -1300,5 +1571,82 @@ public class ServletValidar extends HttpServlet {
 
     private void mostrarHojasTaller(HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private void leerHoja(HttpServletRequest request, HttpServletResponse response) {
+        DaoHoja daoh;
+        Hoja hoj;
+        Horario hr;
+        if (request.getParameter("idhoja") != null) {
+            hr = new Horario();
+            hoj = new Hoja();
+            hoj.setId_hoja(Integer.parseInt(request.getParameter("idhoja")));
+            System.out.println("id horario " + hoj.getId_hoja());
+            daoh = new DaoHoja();
+            try {
+            } catch (Exception e) {
+                System.out.println("el error al encontrar el horaio es " + e);
+            }
+        } else {
+            request.setAttribute("msje", "No tiene el parametro necesario");
+        }
+        try {
+            this.distritos(request);
+            this.marcas(request);
+            this.mostrarEspecialidad(request);
+            this.getServletConfig().getServletContext().getRequestDispatcher("/citas/solicitarCitaSinH.jsp").forward(request, response);
+            System.out.println("se envio a edita");
+        } catch (Exception e) {
+            System.out.println("erro de obtener cliente " + e);
+        }
+    }
+
+    private void formasignarHorario(HttpServletRequest request, HttpServletResponse response) {
+        DaoTecnico daot = new DaoTecnico();
+        List<Tecnicos> tecn = null;
+        try {
+            tecn = daot.mostrarTecnicos();
+            request.setAttribute("listaTecnico", tecn);
+            System.out.println("lista tecnicos");
+        } catch (Exception e) {
+            request.setAttribute("msje", "no se puedo listar");
+        } finally {
+            daot = null;
+        }
+        try {
+            System.out.println("entro en redireccion");
+            this.getServletConfig().getServletContext().getRequestDispatcher("/asignacionHorarios.jsp").forward(request, response);
+        } catch (Exception e) {
+        }
+    }
+
+    private void leerServiciosEdit(HttpServletRequest request, HttpServletResponse response) {
+        DaoHoja daoh;
+        DaoServicio daos;
+        Servicio serv;
+        if (request.getParameter("idservicio") != null) {
+            serv = new Servicio();
+            serv.setId_servicio(Integer.parseInt(request.getParameter("idservicio")));
+            daos = new DaoServicio();
+            daoh = new DaoHoja();
+            try {
+                serv = daoh.leerServicio(serv);
+                if (serv != null) {
+                    request.setAttribute("servicio", serv);
+                } else {
+                    request.setAttribute("msje", "No se encontro el Servicio");
+                }
+            } catch (Exception e) {
+                System.out.println("el error al encontrar el Servicio es " + e);
+            }
+        } else {
+            request.setAttribute("msje", "No tiene el parametro necesario");
+        }
+        idservicio = Integer.parseInt(request.getParameter("idservicio"));
+        try {
+            System.out.println("entro en redireccion");
+            this.getServletConfig().getServletContext().getRequestDispatcher("/hojaServicios.jsp").forward(request, response);
+        } catch (Exception e) {
+        }
     }
 }

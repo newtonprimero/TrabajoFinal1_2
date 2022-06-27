@@ -147,6 +147,7 @@
                                                             </c:forEach>
                                                         </select>
                                                     </div>
+                                                    <input type="hidden" name="txtpresupuesto" value="0.0">
                                                     <div class="form-group form-primary">
                                                         <input type="text" name="txtdireccion" class="form-control"
                                                             required="">

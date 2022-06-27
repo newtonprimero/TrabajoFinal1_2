@@ -87,36 +87,13 @@
         <div class="pcoded-navigation-label" data-i18n="nav.category.forms">Asignación &amp; Visualizacion</div>
         <ul class="pcoded-item pcoded-left-item">
             <li id="iluminar">
-                <a href="asignacionHorarios.jsp" class="waves-effect waves-dark">
+                <a href="<c:url value="ServletValidar">
+                    <c:param name="accion" value="formasignarHorario"/>
+                    </c:url>" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-layers"></i><b>FC</b></span>
                     <span class="pcoded-mtext" data-i18n="nav.form-components.main">Asignar Horarios</span>
                     <span class="pcoded-mcaret"></span>
                 </a>
-            </li>
-            <li class="pcoded-hasmenu " id="iluminar">
-                <a href="javascript:void(0)" class="waves-effect waves-dark">
-                    <span class="pcoded-micon"><i class="ti-direction-alt"></i><b>M</b></span>
-                    <span class="pcoded-mtext" data-i18n="nav.form-components.main">Hojas de Servicio</span>
-                    <span class="pcoded-mcaret"></span>
-                </a>
-                <ul class="pcoded-submenu">
-                    <li class="">
-                        <a href="ServletValidar?accion=mostrarHojaServicioDomi" class="waves-effect waves-dark">
-                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                            <span class="pcoded-mtext"
-                                  data-i18n="nav.menu-levels.menu-level-21">Servicios Taller</span>
-                            <span class="pcoded-mcaret"></span>
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="ServletValidar?accion=mostrarHojaServicioDomi" class="waves-effect waves-dark">
-                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                            <span class="pcoded-mtext"
-                                  data-i18n="nav.menu-levels.menu-level-21">Servicios Domicilio</span>
-                            <span class="pcoded-mcaret"></span>
-                        </a>
-                    </li>
-                </ul>
             </li>
             <li id="iluminar">
                 <a href="bs-basic-table.html" class="waves-effect waves-dark">

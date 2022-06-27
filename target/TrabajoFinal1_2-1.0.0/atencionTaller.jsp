@@ -30,6 +30,12 @@
         <meta name="keywords"
               content="bootstrap, bootstrap admin template, admin theme, admin dashboard, dashboard template, admin template, responsive" />
         <meta name="author" content="codedthemes" />
+        <!-- Date tables sheart -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
+        <!-- Date tables end -->
         <!-- Favicon icon -->
         <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
         <!-- Google font-->
@@ -68,10 +74,10 @@
                     <div class="pcoded-wrapper">
                         <% System.out.println("analisis nav bar");%>
                         <c:if test="${usuario.id_rol==1}">
-                            <%@include file="navbar/navbar2.jsp" %>
+                            <%@include file="navbar/navbar3.jsp" %>
                         </c:if>
                         <c:if test="${usuario.id_rol==2}">
-                            <%@include file="navbar/navbarTecnico.jsp" %>
+                            <%@include file="navbar/navbarTecnico2.jsp" %>
                         </c:if>
                         <div class="pcoded-content">
                             <!-- Page-header start -->
@@ -80,8 +86,8 @@
                                     <div class="row align-items-center">
                                         <div class="col-md-8">
                                             <div class="page-header-title">
-                                                <h5 class="m-b-10">Home</h5>
-                                                <p class="m-b-0">Bienvenidos al sistema Taller UTP</p>
+                                                <h5 class="m-b-10">Servicio en taller</h5>
+                                                <p class="m-b-0">Atencion en Taller</p>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -101,32 +107,24 @@
                             <!-- Hover table card start -->
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Clientes</h5>
-                                    <span>Mantenimiento de <code>clientes</code> del taller</span>
+                                    <h5>Seleccione el Cliente</h5>
+                                    <span>Atencion en el <code>taller</code> de reparacion.</span>
+                                    
                                     <div class="card-header-right">
-                                        <ul class="list-unstyled card-option">
-                                            <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                            <li><i class="fa fa-window-maximize full-card"></i></li>
-                                            <li><i class="fa fa-minus minimize-card"></i></li>
-                                            <li><i class="fa fa-refresh reload-card"></i></li>
-                                            <li><i class="fa fa-trash close-card"></i></li>
-                                        </ul>
+                                        <a href="ServletValidar?accion=registrarcliente">
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop"  title="Seleccionar" data-original-title="Seleccionar" style="background: #771A1A; border-color: #771A1A; margin-right: 50px">Registrar Cliente</button>
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="card-block table-border-style">
                                     <div class="table-responsive">
-                                        <table class="table table-hover">
+                                        <table class="table table-striped table-bordered" id="examplerr">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Nombres Apellidos</th>
                                                     <th>DNI</th>
-                                                    <th>Direccion</th>
                                                     <th>Telefono</th>
-                                                    <th>Telefono</th>
-                                                    <th>Correo</th>
-                                                    <th>Estado</th>
-                                                    <th>Fecha registro</th>
                                                     <th>Acción</th>
                                                 </tr>
                                             </thead>
@@ -136,24 +134,12 @@
                                                         <td>${status.index + 1}</td>
                                                         <td>${cliente.nombres} ${cliente.apellidos}</td>
                                                         <td>${cliente.dni}</td>
-                                                        <td>${cliente.direccion}</td>
                                                         <td>${cliente.telefono1}</td>
-                                                        <td>${cliente.telefono2}</td>
-                                                        <td>${cliente.correo}</td>
-                                                        <c:if test="${cliente.estado_activ == true}">
-                                                            <td><span class="badge bg-green active" style="color: #000;background: #198754">Cliente Activo </span></td>
-                                                        </c:if>
-                                                        <c:if test="${cliente.estado_activ == false}">
-                                                            <td><span class="badge bg-red active" style="color: #000;background: #dc3545">Cliente Inagtivo </span></td>
-                                                        </c:if>
-                                                        <td>${cliente.fecha_hora}</td>
-                                                        
                                                         <td>
-                                                            <button type="button" class="btn btn-primary fa fa-times" data-toggle="tooltip"  title="Desabilitar" data-original-title="Desabilitar" style="background: #771A1A; border-color: #771A1A"></button>
                                                             <a href="<c:url value="ServletValidar">
-                                                                        <c:param name="accion" value="leerClienteEdit" />
-                                                                        <c:param name="idcliente" value="${cliente.id_client}" />
-                                                                    </c:url>"><button type="button" class="btn btn-primary fa fa-pencil" data-toggle="modal" data-target="#staticBackdrop"  title="Editar" data-original-title="Editar" style="background: #771A1A; border-color: #771A1A"></button>
+                                                                   <c:param name="accion" value="leerCliente" />
+                                                                   <c:param name="idcliente" value="${cliente.id_client}" />
+                                                               </c:url>"><button type="button" class="btn btn-primary fa fa-check-circle" data-toggle="modal" data-target="#staticBackdrop"  title="Seleccionar" data-original-title="Seleccionar" style="background: #771A1A; border-color: #771A1A"></button>
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -169,6 +155,7 @@
                 </div>
             </div>
         </div>
+        <script src="./js/tables.js"></script>
     </body>
 
 </html>

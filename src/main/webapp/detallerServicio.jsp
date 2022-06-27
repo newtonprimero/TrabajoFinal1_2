@@ -69,7 +69,12 @@
                     <div class="pcoded-wrapper">
 
                         <!-- navbar2 coomienzo-->
-                        <%@include file="navbar/navbar3.jsp" %>
+                        <<c:if test="${usuario.id_rol==1}">
+                            <%@include file="navbar/navbar3.jsp" %>
+                        </c:if>
+                        <c:if test="${usuario.id_rol==2}">
+                            <%@include file="navbar/navbarTecnico2.jsp" %>
+                        </c:if>
                         <!-- navbar2 fin-->
 
                         <div class="pcoded-content">
@@ -85,6 +90,50 @@
                                             <!-- Page body start -->
                                             <div class="page-body">
                                                 <div class="row">
+                                                    <div class="col-sm-7">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <h5>Repuestos disponibles</h5>
+                                                                <div class="card-header-right">
+                                                                    <ul class="list-unstyled card-option">
+                                                                        <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                                                        <li><i class="fa fa-window-maximize full-card"></i></li>
+                                                                        <li><i class="fa fa-minus minimize-card"></i></li>
+                                                                        <li><i class="fa fa-refresh reload-card"></i></li>
+                                                                        <li><i class="fa fa-trash close-card"></i></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-block table-border-style">
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-striped table-bordered" id="examplerr">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Nombre</th>
+                                                                                <th>Marca</th>
+                                                                                <th>Accion</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <c:forEach var="repuesto" items="${listarRepuestos}" varStatus="status">
+                                                                                <tr>
+                                                                                    <td style="width: 10px; word-wrap: break-word;">${repuesto.nombre_repuesto}</td>
+                                                                                    <td>${repuesto.nombre_marca}</td>
+                                                                                    <td>
+                                                                                        <a href="<c:url value="ServletValidar">
+                                                                                               <c:param name="accion" value="buscarRepuestoTaller" />
+                                                                                               <c:param name="txtidrepuesto" value="${repuesto.id_repuesto}" />
+                                                                                           </c:url>"><button type="button" name="shear" value="buscarRepuesto" class="btn btn-primary fa fa-cart-plus" data-toggle="modal" data-target="#staticBackdrop"  title="Agregar" data-original-title="Agregar" style="background: #771A1A; border-color: #771A1A"></button>
+                                                                                        </a>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </c:forEach>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <div class="col-md-5">
                                                         <div class="card">
                                                             <div class="card-header">
@@ -97,13 +146,10 @@
                                                                         <input type="hidden"  name="name">
                                                                         <div class="form-group form-default">
                                                                             <input type="hidden" name="txtidServi" value="${servicio.id_servicio}">
-                                                                            <input type="text" name="txtidrepuesto" class="form-control" required="">
-                                                                            <span class="form-bar"></span>
-                                                                            <label class="float-label">ID Repuesto</label>
+                                                                            <input type="text" name="txtidrepuesto2" class="form-control" required="" disabled value="${repuesto.id_repuesto}">
+                                                                            <span class="form-bar">ID Repuesto</span>
+                                                                            <label class="float-label"></label>
                                                                         </div>
-                                                                    </div>
-                                                                    <div class="col-sm-4">
-                                                                        <button type="submit" name="shear" value="buscarRepuesto" class="btn waves-effect waves-light btn-primary btn-block">Buscar</button>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group form-default">
@@ -146,7 +192,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-7">
+                                                    <div class="col-md-10">
                                                         <div class="card">
                                                             <div class="card-header">
                                                                 <h5>Detalles de Servicios</h5>
@@ -204,56 +250,6 @@
                                                 </div>
                                             </div>
                                         </form>
-                                        <div class="col-sm-12">
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <h5>Repuestos disponibles</h5>
-                                                    <div class="card-header-right">
-                                                        <ul class="list-unstyled card-option">
-                                                            <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                            <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                            <li><i class="fa fa-minus minimize-card"></i></li>
-                                                            <li><i class="fa fa-refresh reload-card"></i></li>
-                                                            <li><i class="fa fa-trash close-card"></i></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="card-block table-border-style">
-                                                    <div class="table-responsive">
-                                                        <table class="table table-striped table-bordered" id="examplerr">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>ID</th>
-                                                                    <th>Nombre</th>
-                                                                    <th>Cantidad</th>
-                                                                    <th>Precio</th>
-                                                                    <th>Marca</th>
-                                                                    <th>Estado</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <c:forEach var="repuesto" items="${listarRepuestos}" varStatus="status">
-                                                                    <tr>
-                                                                        <td>${repuesto.id_repuesto}</td>
-                                                                        <td>${repuesto.nombre_repuesto}</td>
-                                                                        <td>${repuesto.cantidad}</td>
-                                                                        <td>S/.${repuesto.precio}</td>
-                                                                        <td>${repuesto.nombre_marca}</td>
-                                                                        <c:if test="${repuesto.estado_actv == true}">
-                                                                            <td><span class="badge bg-green active" style="color: #000;background: #198754">Repuesto Activo </span></td>
-                                                                        </c:if>
-                                                                        <c:if test="${repuesto.estado_actv == false}">
-                                                                            <td><span class="badge bg-red active" style="color: #000;background: #dc3545">Repuesto Inagtivo </span></td>
-                                                                        </c:if>
-                                                                        
-                                                                    </tr>
-                                                                </c:forEach>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

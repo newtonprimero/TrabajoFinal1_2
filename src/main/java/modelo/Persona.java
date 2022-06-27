@@ -17,8 +17,10 @@ public class Persona {
     String direccion;
     int especialidad;
     String telefono;
+    String telefono2;
     String estado;
 
+    
     public Persona() {
     }
 
@@ -33,7 +35,15 @@ public class Persona {
         this.telefono = telefono;
         this.estado = estado;
     }
+    
+    public String getTelefono2() {
+        return telefono2;
+    }
 
+    public void setTelefono2(String telefono2) {
+        this.telefono2 = telefono2;
+    }
+    
     public int getId_persona() {
         return id_persona;
     }

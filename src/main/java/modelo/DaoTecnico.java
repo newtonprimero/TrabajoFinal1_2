@@ -184,7 +184,7 @@ public class DaoTecnico {
         String hoy=actual.format(dtf);
         String manana=mañana.format(dtf);
         String sql="SELECT horarios.id_horario,horarios.fecha, horarios.hora_ini, horarios.hora_fin,distrito.nombre_distrito, cita.direccion, persona.nombres, persona.apellidos, persona.dni, horarios.estado_activ,servicio_domicilio.id_servicio_domi,servicio_domicilio.estado_activ FROM `horarios`INNER JOIN servicio_domicilio ON servicio_domicilio.id_horario=horarios.id_horario INNER JOIN cita ON cita.id_cita=servicio_domicilio.id_cita INNER JOIN distrito ON distrito.id_distrito=cita.id_distrito INNER JOIN persona ON persona.id_persona=cita.id_persona "
-                + " WHERE horarios.fecha BETWEEN '"+ hoy +"' AND '"+ manana +"' AND horarios.estado_activ=0 AND horarios.id_persona="+idt;
+                + " WHERE horarios.estado_activ=0 AND horarios.id_persona="+idt;
         try {
             con=cn.Conexion();
             ps=con.prepareStatement(sql);
@@ -213,6 +213,143 @@ public class DaoTecnico {
                 servi.setHorario(hora);
                 lst.add(servi);
                 System.out.println("Nombre tecnico "+perso.getNombres()+" "+ perso.getApellidos());
+            }
+            con.close();
+        } catch (Exception e) {
+            System.out.println("el error al mostrar "+e);
+        }
+        return lst;
+    }
+    
+    public List<Servicio> listarServiciosTcnAll(int idt, int tipo){
+        List<Servicio> lst = new ArrayList<Servicio>();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDateTime actual=LocalDateTime.now();
+        LocalDateTime mañana=actual.plusDays(5);
+        String hoy=actual.format(dtf);
+        String manana=mañana.format(dtf);
+        String sql = null;
+        if (tipo==1) {
+            sql="SELECT servicio.id_servicio, servicio.estado_activ, persona.dni, cita.telefono, aparato.descripcion, aparato.nroSerie,"
+                + " marca.descripcion, cita.presupuesto, cita.fecha_hora, servicio.total, cita.id_cita FROM `servicio`"
+                + " INNER JOIN cita ON cita.id_cita=servicio.id_cita INNER JOIN persona ON "
+                + "persona.id_persona=cita.id_persona INNER JOIN aparato ON aparato.id_aparato=cita.id_aparato"
+                + " INNER JOIN marca ON marca.id_marca=aparato.id_marca WHERE servicio.id_tecnico="+idt
+                + ";";
+        }else if (tipo==2) {
+            sql="SELECT servicio.id_servicio, servicio.estado_activ, persona.dni, cita.telefono, aparato.descripcion, aparato.nroSerie,"
+                + " marca.descripcion, cita.presupuesto, cita.fecha_hora, servicio.total, cita.id_cita FROM `servicio`"
+                + " INNER JOIN cita ON cita.id_cita=servicio.id_cita INNER JOIN persona ON "
+                + "persona.id_persona=cita.id_persona INNER JOIN aparato ON aparato.id_aparato=cita.id_aparato"
+                + " INNER JOIN marca ON marca.id_marca=aparato.id_marca WHERE servicio.id_tecnico="+idt
+                + " and servicio.estado_activ=1;";
+        }else if (tipo==3) {
+            sql="SELECT servicio.id_servicio, servicio.estado_activ, persona.dni, cita.telefono, aparato.descripcion, aparato.nroSerie,"
+                + " marca.descripcion, cita.presupuesto, cita.fecha_hora, servicio.total, cita.id_cita FROM `servicio`"
+                + " INNER JOIN cita ON cita.id_cita=servicio.id_cita INNER JOIN persona ON "
+                + "persona.id_persona=cita.id_persona INNER JOIN aparato ON aparato.id_aparato=cita.id_aparato"
+                + " INNER JOIN marca ON marca.id_marca=aparato.id_marca WHERE servicio.id_tecnico="+idt
+                + " and servicio.estado_activ=0;";
+        }
+         
+        try {
+            con=cn.Conexion();
+            ps=con.prepareStatement(sql);
+            rs=ps.executeQuery();
+            while (rs.next()) {
+                Servicio servi=new Servicio();
+                servi.setId_servicio(rs.getInt(1));
+                servi.setEstado_activ(rs.getBoolean(2));
+                Persona perso=new Persona();
+                perso.setDni(rs.getString(3));
+                Cita cita=new Cita();
+                cita.setTelefono(rs.getInt(4));
+                Aparato apara = new Aparato();
+                apara.setDescAparato(rs.getString(5));
+                apara.setNroSerie(rs.getString(6));
+                Marca marc=new Marca();
+                marc.setDescripcion(rs.getString(7));
+                cita.setPresupuesto(rs.getDouble(8));
+                cita.setFecha_hora(rs.getString(9));
+                servi.setTotal(rs.getDouble(10));
+                cita.setId_cita(rs.getInt(11));
+                apara.setMarca(marc);
+                cita.setAparato(apara);
+                cita.setPerso(perso);
+                servi.setCita(cita);
+                
+                lst.add(servi);
+                System.out.println("Nombre tecnico "+perso.getDni()+" ");
+            }
+            con.close();
+        } catch (Exception e) {
+            System.out.println("el error al mostrar "+e);
+        }
+        return lst;
+    }
+    
+    public List<Servicio> listarServiciosTcnDomi(int idt, int tipo){
+        List<Servicio> lst = new ArrayList<Servicio>();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDateTime actual=LocalDateTime.now();
+        LocalDateTime mañana=actual.plusDays(5);
+        String hoy=actual.format(dtf);
+        String manana=mañana.format(dtf);
+        String sql = null;
+        if (tipo==1) {
+            sql="SELECT servicio_domicilio.id_servicio_domi, servicio_domicilio.estado_activ, persona.dni,"
+                    + " cita.telefono, aparato.descripcion, aparato.nroSerie, marca.descripcion, cita.presupuesto,"
+                    + " cita.fecha_hora, servicio_domicilio.total, cita.id_cita FROM `servicio_domicilio` INNER JOIN"
+                    + " cita ON cita.id_cita=servicio_domicilio.id_cita INNER JOIN persona ON persona.id_persona=cita.id_persona"
+                    + " INNER JOIN aparato ON aparato.id_aparato=cita.id_aparato INNER JOIN marca ON marca.id_marca=aparato.id_marca"
+                    + " INNER JOIN horarios ON horarios.id_horario=servicio_domicilio.id_horario WHERE horarios.id_persona="+idt
+                    + ";";
+        }else if (tipo==2) {
+            sql="SELECT servicio_domicilio.id_servicio_domi, servicio_domicilio.estado_activ, persona.dni,"
+                    + " cita.telefono, aparato.descripcion, aparato.nroSerie, marca.descripcion, cita.presupuesto,"
+                    + " cita.fecha_hora, servicio_domicilio.total, cita.id_cita FROM `servicio_domicilio` INNER JOIN"
+                    + " cita ON cita.id_cita=servicio_domicilio.id_cita INNER JOIN persona ON persona.id_persona=cita.id_persona"
+                    + " INNER JOIN aparato ON aparato.id_aparato=cita.id_aparato INNER JOIN marca ON marca.id_marca=aparato.id_marca"
+                    + " INNER JOIN horarios ON horarios.id_horario=servicio_domicilio.id_horario WHERE horarios.id_persona="+idt
+                    + " and servicio_domicilio.estado_activ=1;";
+        }else if (tipo==3) {
+            sql="SELECT servicio_domicilio.id_servicio_domi, servicio_domicilio.estado_activ, persona.dni,"
+                    + " cita.telefono, aparato.descripcion, aparato.nroSerie, marca.descripcion, cita.presupuesto,"
+                    + " cita.fecha_hora, servicio_domicilio.total, cita.id_cita FROM `servicio_domicilio` INNER JOIN"
+                    + " cita ON cita.id_cita=servicio_domicilio.id_cita INNER JOIN persona ON persona.id_persona=cita.id_persona"
+                    + " INNER JOIN aparato ON aparato.id_aparato=cita.id_aparato INNER JOIN marca ON marca.id_marca=aparato.id_marca"
+                    + " INNER JOIN horarios ON horarios.id_horario=servicio_domicilio.id_horario WHERE horarios.id_persona="+idt
+                    + " and servicio_domicilio.estado_activ=0;";
+        }
+         
+        try {
+            con=cn.Conexion();
+            ps=con.prepareStatement(sql);
+            rs=ps.executeQuery();
+            while (rs.next()) {
+                Servicio servi=new Servicio();
+                servi.setId_servicio(rs.getInt(1));
+                servi.setEstado_activ(rs.getBoolean(2));
+                Persona perso=new Persona();
+                perso.setDni(rs.getString(3));
+                Cita cita=new Cita();
+                cita.setTelefono(rs.getInt(4));
+                Aparato apara = new Aparato();
+                apara.setDescAparato(rs.getString(5));
+                apara.setNroSerie(rs.getString(6));
+                Marca marc=new Marca();
+                marc.setDescripcion(rs.getString(7));
+                cita.setPresupuesto(rs.getDouble(8));
+                cita.setFecha_hora(rs.getString(9));
+                servi.setTotal(rs.getDouble(10));
+                cita.setId_cita(rs.getInt(11));
+                apara.setMarca(marc);
+                cita.setAparato(apara);
+                cita.setPerso(perso);
+                servi.setCita(cita);
+                
+                lst.add(servi);
+                System.out.println("Nombre tecnico "+perso.getDni()+" ");
             }
             con.close();
         } catch (Exception e) {

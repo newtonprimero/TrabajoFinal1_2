@@ -50,9 +50,9 @@ public class DaoServicio {
     public void nuevoCita(Cita cita){
         nuevoAparato(cita);
         String sql = "INSERT INTO `cita` (`id_cita`, `id_persona`, `id_aparato`, `id_distrito`, `direccion`, "
-                + "`fecha_hora`, `presupuesto`, `estado_activ`) "
+                + "`fecha_hora`, `presupuesto`, `estado_activ`,`telefono`) "
                 + "VALUES (NULL, '"+cita.getId_persona()+"', '"+idapa+"', '"+cita.getDiaDistrito().getId_distrito()
-                +"', '"+cita.getDireccion()+"', '"+cita.getFecha_hora()+"', NULL, '1');";
+                +"', '"+cita.getDireccion()+"', '"+cita.getFecha_hora()+"', NULL, '1', NULL);";
         ideper=cita.getId_persona();
         try {
             con=cn.Conexion();
@@ -248,7 +248,7 @@ public class DaoServicio {
         }
         return cli;
     }
-    public void generarServicio(Cita cita,Horario hor){
+    public void generarServicio(Cita cita, int idtec){
         int idci=0;
         String sql2="SELECT cita.id_cita FROM `cita` ORDER BY id_aparato DESC LIMIT 1";
         try {
@@ -264,8 +264,8 @@ public class DaoServicio {
             System.out.println("el error al idci "+e);
         }
         String sql = "INSERT INTO `servicio` (`id_servicio`, `id_cita`, `id_tipo`,"
-                + " `id_tecnico`, `total`, `estado_activ`) VALUES (NULL, '"+idci+"', '2',"
-                + " '"+hor.getTecnico().getId_tecn()+"', NULL, '1');";
+                + " `id_tecnico`, `total`, `estado_activ`) VALUES (NULL, '"+idci+"', '1',"
+                + " '"+idtec+"',NULL , '1');";
         try {
             con=cn.Conexion();
             PreparedStatement stm = con.prepareStatement(sql);
@@ -275,16 +275,6 @@ public class DaoServicio {
             
         } catch (Exception e) {
             System.out.println("error del insert servicio "+e);
-        }
-        String sql3="UPDATE `horarios` SET `estado_activ` = '0' WHERE `horarios`.`id_horario` = "+hor.getId_horario()+";";
-        try {
-            con=cn.Conexion();
-            PreparedStatement stm = con.prepareStatement(sql3);
-            stm.execute();
-            con.commit();
-            con.close();
-        } catch (Exception e) {
-            System.out.println("el error al ACTUALIZAR horario es "+e);
         }
     }
     public void generarServicio2(Cita cita,Horario hor){
@@ -329,9 +319,9 @@ public class DaoServicio {
     public void nuevoCitaHorario(Cita cita,Horario hour){
         nuevoAparato(cita);
         String sql = "INSERT INTO `cita` (`id_cita`, `id_persona`, `id_aparato`, `id_distrito`, `direccion`, "
-                + "`fecha_hora`, `presupuesto`, `estado_activ`) "
+                + "`fecha_hora`, `presupuesto`, `estado_activ`, `telefono`) "
                 + "VALUES (NULL, '"+cita.getId_persona()+"', '"+idapa+"', '"+cita.getDiaDistrito().getId_distrito()
-                +"', '"+cita.getDireccion()+"', '"+cita.getFecha_hora()+"', NULL, '1');";
+                +"', '"+cita.getDireccion()+"', '"+cita.getFecha_hora()+"', NULL, '1', NULL);";
         ideper=cita.getId_persona();
         try {
             con=cn.Conexion();
@@ -344,6 +334,25 @@ public class DaoServicio {
             System.out.println("error es "+e);
         }
         generarServicio2(cita, hour);
+    }
+    public void nuevoCitaTaller(Cita cita,int idtecn){
+        nuevoAparato(cita);
+        String sql = "INSERT INTO `cita` (`id_cita`, `id_persona`, `id_aparato`, `id_distrito`, `direccion`, "
+                + "`fecha_hora`, `presupuesto`, `estado_activ`, `telefono`) "
+                + "VALUES (NULL, '"+cita.getId_persona()+"', '"+idapa+"', '"+cita.getDiaDistrito().getId_distrito()
+                +"', '"+cita.getDireccion()+"', '"+cita.getFecha_hora()+"', '"+cita.getPresupuesto()+"', '1','"+cita.getTelefono()+"');";
+        ideper=cita.getId_persona();
+        try {
+            con=cn.Conexion();
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.execute();
+            con.commit();
+            con.close();
+            
+        } catch (Exception e) {
+            System.out.println("error es "+e);
+        }
+        generarServicio(cita,idtecn);
     }
     public List<Servicio> mostrarTodosServicios(){
         List<Servicio> lst = new ArrayList<Servicio>();
@@ -388,6 +397,34 @@ public class DaoServicio {
         Servicio servi=null;
         ResultSet rs=null;
         String sql="SELECT * FROM `servicio` WHERE servicio.id_servicio=;"+serv.getId_servicio();
+        try {
+            con=cn.Conexion();
+            ps=con.prepareStatement(sql);
+            rs=ps.executeQuery();
+            if (rs.next()) {
+                servi=new Servicio();
+                servi.setId_servicio(rs.getInt(1));
+                Cita cita=new Cita();
+                cita.setId_cita(rs.getInt(2));
+                servi.setCita(cita);
+                servi.setTipo(rs.getInt(3));
+                Persona perso=new Persona();
+                perso.setId_persona(rs.getInt(4));
+                servi.setPersona(perso);
+                servi.setTotal(rs.getDouble(5));
+                servi.setEstado_activ(rs.getBoolean(6));
+            }
+            con.close();
+        } catch (Exception e) {
+            System.out.println("error al buscar servicio "+e);
+        }
+        return serv;
+    }
+    
+    public Servicio leerServicioDomi(Servicio serv) {
+        Servicio servi=null;
+        ResultSet rs=null;
+        String sql="SELECT * FROM `servicio_domicilio` WHERE servicio_domicilio.id_servicio_domi ="+serv.getId_servicio();
         try {
             con=cn.Conexion();
             ps=con.prepareStatement(sql);
@@ -559,5 +596,32 @@ public class DaoServicio {
             System.out.println("error mostrar servi "+e);
         }
         return lst;
+    }
+    
+    public void actualizarPresu(int idc, double presu){
+        String sql3="UPDATE `cita` SET `presupuesto` = '"+presu+"' WHERE `cita`.`id_cita` = "+idc+";";
+        try {
+            con=cn.Conexion();
+            PreparedStatement stm = con.prepareStatement(sql3);
+            stm.execute();
+            con.commit();
+            con.close();
+            System.out.println("se actualizo "+idc);
+        } catch (Exception e) {
+            System.out.println("el error al ACTUALIZAR presu es "+e);
+        }
+    }
+    public void cancelarServicioTaller(int ids, double total){
+        String sql3="UPDATE `servicio` SET `total` = '"+total+"', `estado_activ` = '0' WHERE `servicio`.`id_servicio` = "+ids+";";
+        try {
+            con=cn.Conexion();
+            PreparedStatement stm = con.prepareStatement(sql3);
+            stm.execute();
+            con.commit();
+            con.close();
+            System.out.println("se actualizo "+ids);
+        } catch (Exception e) {
+            System.out.println("el error al ACTUALIZAR total es "+e);
+        }
     }
 }

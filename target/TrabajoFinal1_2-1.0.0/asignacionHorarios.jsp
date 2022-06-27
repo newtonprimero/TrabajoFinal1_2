@@ -23,6 +23,12 @@
         <meta name="keywords"
               content="bootstrap, bootstrap admin template, admin theme, admin dashboard, dashboard template, admin template, responsive" />
         <meta name="author" content="codedthemes" />
+        <!-- Date tables sheart -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
+        <!-- Date tables end -->
         <!-- Favicon icon -->
         <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
         <!-- Google font-->
@@ -63,7 +69,7 @@
                     <div class="pcoded-wrapper">
 
                         <!-- navbar2 coomienzo-->
-                        <%@include file="navbar/navbar2.jsp" %>
+                        <%@include file="navbar/navbar3.jsp" %>
                         <!-- navbar2 fin-->
 
                         <div class="pcoded-content">
@@ -92,159 +98,188 @@
                             <!-- Page-header end -->
 
                             <div class="col-md-12">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-sm-5">
-                                        <form class="form-material" action="ServletValidar?accion=buscardni" method="post">
-                                            <div class="auth-box card">
-                                                <div class="card-block">
-                                                    
-                                                    <div class="row m-b-20">
-                                                        <div class="col-md-12">
-                                                            <h3 class="text-center txt-primary">Buscar tecnico</h3>
-                                                        </div>
-                                                        
-                                                    </div>
-                                                    <div class="form-group form-primary row">
-                                                        <div class="form-group col-sm-8" >
-                                                            <input type="text" name="txtdnishear" class="form-control"
-                                                                required="">
-                                                            <span class="form-bar"></span>
-                                                            <label class="float-label" style="margin-left:15px ;">Codigo o DNI</label>   
-                                                        </div>
-                                                        <div class="form-group col-sm-4" >
-                                                            <button type="submit" class="btn btn-primary btn-md waves-effect text-center m-b-12" name="shear" value="sheardni">Buscar</button>
-                                                            <span class="form-bar"></span>
-                                                        </div>
-                                                    </div>
-                                                    <hr />
-                                                </div>
-                                            </div>
-                                        </form>
-                                        <form class="form-material" action="ServletValidar?accion=buscardni" method="post">
-                                            <div class="auth-box card">
-                                                <div class="card-block">
-                                                    
-                                                    <div class="row m-b-20">
-                                                        <div class="col-md-12">
-                                                            <h3 class="text-center txt-primary">Asignar Horario</h3>
-                                                        </div>
-                                                        
-                                                    </div>
-                                                    <div class="form-group form-primary">
-                                                        <span class="form-bar"></span>
-                                                        <select name="selecEstado" class="form-control" >
-                                                          <option value="">Seleccione estado</option>
-                                                          <option value="true">Activo</option>
-                                                          <option value="false">Resuelto</option>
-                                                      </select>
-                                                    </div>
-                                                    <div class="form-group form-primary">
-                                                      <div class="form-group col-sm-12" >
-                                                        <label class="col-sm-3" >Fecha</label> 
-                                                        <input type="date" name="inputfecha" class="form-control col-sm-8"
-                                                            required="">
-                                                        <span class="form-bar"></span>
-                                                      </div>
-                                                    </div>
-                                                    <div class="form-group form-primary">
-                                                      <div class="form-group col-sm-12" >
-                                                        <label class="col-sm-3">Hora Inico</label> 
-                                                        <input type="time" name="inputHIni" class="form-control col-sm-4"
-                                                            required="">
-                                                        <span class="form-bar"></span>
-                                                      </div>
-                                                      <div class="form-group col-sm-12" >
-                                                        <label class="col-sm-3">Hora Fin</label> 
-                                                        <input type="time" name="inputHFin" class="form-control col-sm-4"
-                                                            required="">
-                                                        <span class="form-bar"></span>
-                                                      </div>
-                                                    </div>
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            <form class="form-material" action="ServletValidar?accion=buscardni" method="post">
+                                                <div class="auth-box card">
+                                                    <div class="card-block">
 
-                                                    <div class="row m-t-30">
-                                                        <div class="col-md-12">
-                                                            <button type="submit"
-                                                                    class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20" name="shear" value="shearIngresarH" >Ingresar</button>
+                                                        <div class="row m-b-20">
+                                                            <div class="col-md-12">
+                                                                <h3 class="text-center txt-primary">Buscar tecnico</h3>
+                                                            </div>
+
                                                         </div>
+
+                                                        <div class="table-responsive">
+                                                            <table class="table table-striped table-bordered" id="examplerr">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Nombres Apellidos</th>
+                                                                        <th>Telefonos</th>
+                                                                        <th>Especialidad</th>
+                                                                        <th>Acción</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <c:forEach var="tenico" items="${listaTecnico}" varStatus="status">
+                                                                        <tr>
+                                                                            <td>${tenico.nombres} ${tenico.apellidos}</td>
+                                                                            <td>${tenico.telefono1} - ${tenico.telefono2}</td>
+                                                                            <td>${tenico.especialidad}</td>
+                                                                            <td>
+                                                                                <a href="<c:url value="ServletValidar">
+                                                                                       <c:param name="accion" value="buscartecnicohora" />
+                                                                                       <c:param name="idtecnico" value="${tenico.id_tecn}" />
+                                                                                       <c:param name="txtdnishear" value="${tecnico.dni}" />
+                                                                                   </c:url>"><button type="button" class="btn btn-primary fa fa-calendar" data-toggle="modal" data-target="#staticBackdrop"  title="Seleecionar" data-original-title="Seleecionar" style="background: #771A1A; border-color: #771A1A"></button>
+                                                                                </a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </c:forEach>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+
                                                     </div>
-                                                    <hr />
                                                 </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    
-                                    <!-- Hover table card start -->
-                                    <div class="col-sm-7">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h5>Horario</h5>
-                                                <div class="card-header-right">
-                                                    <ul class="list-unstyled card-option">
-                                                        <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                        <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                        <li><i class="fa fa-minus minimize-card"></i></li>
-                                                        <li><i class="fa fa-refresh reload-card"></i></li>
-                                                        <li><i class="fa fa-trash close-card"></i></li>
-                                                    </ul>
+                                            </form>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <form class="form-material" action="ServletValidar?accion=buscardni" method="post">
+                                                <div class="auth-box card">
+                                                    <div class="card-block">
+
+                                                        <div class="row m-b-20">
+                                                            <div class="col-md-12">
+                                                                <h3 class="text-center txt-primary">Asignar Horario</h3>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="form-group form-primary row">
+                                                            <div class="form-group col-sm-12" >
+                                                                <input type="hidden" name="txtdnishear" value="${tecnico.dni}">
+                                                                <input type="text" name="txtidtecnico" disabled class="form-control"
+                                                                       required="" value="${tecnico.nombres} ${tecnico.apellidos}">
+                                                                <span class="form-bar">Nombres y Apellidos</span>
+                                                                <label class="float-label" style="margin-left:15px ;"></label>   
+                                                            </div>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="form-group form-primary">
+                                                            <span class="form-bar"></span>
+                                                            <select name="selecEstado" class="form-control" >
+                                                                <option value="">Seleccione estado</option>
+                                                                <option value="true">Activo</option>
+                                                                <option value="false">Resuelto</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group form-primary">
+                                                            <div class="form-group col-sm-12" >
+                                                                <label class="col-sm-3" >Fecha</label> 
+                                                                <input type="date" name="inputfecha" class="form-control col-sm-8"
+                                                                       required="">
+                                                                <span class="form-bar"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group form-primary">
+                                                            <div class="form-group col-sm-12" >
+                                                                <label class="col-sm-3">Hora Inico</label> 
+                                                                <input type="time" name="inputHIni" class="form-control col-sm-4"
+                                                                       required="">
+                                                                <span class="form-bar"></span>
+                                                            </div>
+                                                            <div class="form-group col-sm-12" >
+                                                                <label class="col-sm-3">Hora Fin</label> 
+                                                                <input type="time" name="inputHFin" class="form-control col-sm-4"
+                                                                       required="">
+                                                                <span class="form-bar"></span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row m-t-30">
+                                                            <div class="col-md-12">
+                                                                <button type="submit"
+                                                                        class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20" name="shear" value="shearIngresarH" >Ingresar</button>
+                                                            </div>
+                                                        </div>
+                                                        <hr />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="card-block table-border-style">
-                                                <div class="table-responsive">
-                                                    <table class="table table-hover" >
-                                                        <thead>
-                                                            <tr>
-                                                                <th>#</th>
-                                                                <th>Apellidos</th>
-                                                                <th>Dni</th>
-                                                                <th>Fecha</th>
-                                                                <th>Hora Inicio</th>
-                                                                <th>Hora Fin</th>
-                                                                <th>Estado</th>
-                                                                <th>Acción</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <c:forEach var="hoarios" items="${listaHorarios}" varStatus="status">
+                                            </form>
+                                        </div>
+                                        <!-- Hover table card start -->
+                                        <div class="col-sm-8">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5>Horario</h5>
+                                                    <div class="card-header-right">
+                                                        <ul class="list-unstyled card-option">
+                                                            <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                                            <li><i class="fa fa-window-maximize full-card"></i></li>
+                                                            <li><i class="fa fa-minus minimize-card"></i></li>
+                                                            <li><i class="fa fa-refresh reload-card"></i></li>
+                                                            <li><i class="fa fa-trash close-card"></i></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="card-block table-border-style">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-hover" >
+                                                            <thead>
                                                                 <tr>
-                                                                    <td>${status.index + 1}</td>
-                                                                    <td>${hoarios.getTecnico().apellidos}</td>
-                                                                    <td>${hoarios.getTecnico().dni}</td>
-                                                                    <td>${hoarios.fecha}</td>
-                                                                    <td>${hoarios.horaini}</td>
-                                                                    <td>${hoarios.horafin}</td>
-                                                                    <c:if test="${hoarios.estado_activ == true}">
-                                                                        <td><span class="badge bg-green active" style="color: #fff;background: #198754">Activo </span></td>
-                                                                    </c:if>
-                                                                    <c:if test="${hoarios.estado_activ == false}">
-                                                                        <td><span class="badge bg-red active" style="color: #000;background: #dc3545">Concluido </span></td>
-                                                                    </c:if>
-                                                                    <td>
-                                                                        <button type="button" class="btn btn-primary fa fa-times" data-toggle="tooltip"  title="Desabilitar" data-original-title="Desabilitar" style="background: #771A1A; border-color: #771A1A"></button>
-                                                                        <button type="button" class="btn btn-primary fa fa-pencil" data-toggle="tooltip"  title="Editar" data-original-title="Editar" style="background: #771A1A; border-color: #771A1A"></button>
-                                                                    </td>
+                                                                    <th>#</th>
+                                                                    <th>Apellidos</th>
+                                                                    <th>Dni</th>
+                                                                    <th>Fecha</th>
+                                                                    <th>Hora Inicio</th>
+                                                                    <th>Hora Fin</th>
+                                                                    <th>Estado</th>
+                                                                    <th>Acción</th>
                                                                 </tr>
-                                                            </c:forEach>
-                                                        </tbody>
-                                                    </table>
+                                                            </thead>
+                                                            <tbody>
+                                                                <c:forEach var="hoarios" items="${listaHorarios}" varStatus="status">
+                                                                    <tr>
+                                                                        <td>${status.index + 1}</td>
+                                                                        <td>${hoarios.getTecnico().apellidos}</td>
+                                                                        <td>${hoarios.getTecnico().dni}</td>
+                                                                        <td>${hoarios.fecha}</td>
+                                                                        <td>${hoarios.horaini}</td>
+                                                                        <td>${hoarios.horafin}</td>
+                                                                        <c:if test="${hoarios.estado_activ == true}">
+                                                                            <td><span class="badge bg-green active" style="color: #fff;background: #198754">Activo </span></td>
+                                                                        </c:if>
+                                                                        <c:if test="${hoarios.estado_activ == false}">
+                                                                            <td><span class="badge bg-red active" style="color: #000;background: #dc3545">Concluido </span></td>
+                                                                        </c:if>
+                                                                        <td>
+                                                                            <button type="button" class="btn btn-primary fa fa-times" data-toggle="tooltip"  title="Desabilitar" data-original-title="Desabilitar" style="background: #771A1A; border-color: #771A1A"></button>
+                                                                            <button type="button" class="btn btn-primary fa fa-pencil" data-toggle="tooltip"  title="Editar" data-original-title="Editar" style="background: #771A1A; border-color: #771A1A"></button>
+                                                                        </td>
+                                                                    </tr>
+                                                                </c:forEach>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <!-- Hover table card end -->
+                                        <!-- end of col-sm-12 -->
                                     </div>
-                                    <!-- Hover table card end -->
-                                <!-- end of col-sm-12 -->
+                                    <!-- end of row -->
                                 </div>
-                                <!-- end of row -->
-                            </div>
 
-                        </div>
+                            </div>
 
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
+        <script src="./js/tables.js"></script>
     </body>
 
 </html>

@@ -107,6 +107,11 @@
                                         </ul>
                                     </div>
                                 </div>
+                                <div class="card-block">
+                                    <a href="ServletGenerarReportes?btnIngresar=ReporteTecnico" target="_blank">
+                                        <button type="button" class="btn btn-primary waves-effect waves-light fa fa-print" data-toggle="modal" data-target="#staticBackdrop"  title="Seleccionar" data-original-title="Seleccionar" style="background: #771A1A; border-color: #771A1A;"> Inprimir</button>
+                                    </a>
+                                </div>
                                 <div class="card-block table-border-style">
                                     <div class="table-responsive">
                                         <table class="table table-hover ">
@@ -141,13 +146,13 @@
                                                             <td><span class="badge bg-red active" style="color: #000;background: #dc3545">Técnico Inagtivo </span></td>
                                                         </c:if>
                                                         <td>${tenico.fecha_hora}</td>
-                                                        
+
                                                         <td>
                                                             <button type="button" class="btn btn-primary fa fa-times" data-toggle="tooltip"  title="Desabilitar" data-original-title="Desabilitar" style="background: #771A1A; border-color: #771A1A"></button>
                                                             <a href="<c:url value="ServletValidar">
-                                                                        <c:param name="accion" value="leerTecnico" />
-                                                                        <c:param name="idtecnico" value="${tenico.id_tecn}" />
-                                                                    </c:url>"><button type="button" class="btn btn-primary fa fa-pencil" data-toggle="modal" data-target="#staticBackdrop"  title="Editar" data-original-title="Editar" style="background: #771A1A; border-color: #771A1A"></button>
+                                                                   <c:param name="accion" value="leerTecnico" />
+                                                                   <c:param name="idtecnico" value="${tenico.id_tecn}" />
+                                                               </c:url>"><button type="button" class="btn btn-primary fa fa-pencil" data-toggle="modal" data-target="#staticBackdrop"  title="Editar" data-original-title="Editar" style="background: #771A1A; border-color: #771A1A"></button>
                                                             </a>
                                                         </td>
                                                     </tr>

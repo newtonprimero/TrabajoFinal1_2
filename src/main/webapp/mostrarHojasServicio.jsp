@@ -137,13 +137,18 @@
                                                         <td>
                                                             <button type="button" class="btn btn-primary fa fa-file-text" data-toggle="tooltip"  title="Mostrar Hoja" data-original-title="Mostrar Hoja" style="background: #771A1A; border-color: #771A1A"></button>
                                                             <a href="<c:url value="ServletValidar">
-                                                                        <c:param name="accion" value="leerCliente" />
-                                                                        <c:param name="idhoja" value="${cliente.id_hoja}" />
-                                                                    </c:url>"><button type="button" class="btn btn-primary fa fa-file-text" data-toggle="modal" data-target="#staticBackdrop"  title="Editar" data-original-title="Editar" style="background: #771A1A; border-color: #771A1A"></button>
+                                                                   <c:param name="accion" value="leerCliente" />
+                                                                   <c:param name="idhoja" value="${cliente.id_hoja}" />
+                                                               </c:url>"><button type="button" class="btn btn-primary fa fa-file-text" data-toggle="modal" data-target="#staticBackdrop"  title="Editar" data-original-title="Editar" style="background: #771A1A; border-color: #771A1A"></button>
+                                                            </a>
+                                                            <a target="_blank" href="<c:url value="ServletGenerarReportes" >
+                                                                   <c:param name="btnIngresar" value="hojaServiciosTaller" />
+                                                                   <c:param name="idhoja" value="${cliente.id_hoja}" />
+                                                               </c:url>"><button type="button" class="btn btn-primary fa fa-print" data-toggle="modal" data-target="#staticBackdrop"  title="Imprimir" data-original-title="Imprimir" style="background: #771A1A; border-color: #771A1A" ></button>
                                                             </a>
                                                         </td>
-                                                    </tr>
-                                                </c:forEach>
+                                                </tr>
+                                            </c:forEach>
                                             </tbody>
                                         </table>
                                     </div>

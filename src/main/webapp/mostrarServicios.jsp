@@ -165,6 +165,11 @@
                                                                    <c:param name="accion" value="leerServicio" />
                                                                    <c:param name="idservicio" value="${servicio.id_servicio}" />
                                                                </c:url>"><button type="button" class="btn btn-primary fa fa-money" data-toggle="tooltip"  title="Completar" data-original-title="Completar" style="background: #771A1A; border-color: #771A1A"></button></a> 
+                                                            <a target="_blank" href="<c:url value="ServletGenerarReportes" >
+                                                                   <c:param name="btnIngresar" value="hojaServiciosTaller" />
+                                                                   <c:param name="idhoja" value="${servicio.id_servicio}" />
+                                                               </c:url>"><button type="button" class="btn btn-primary fa fa-print" data-toggle="modal" data-target="#staticBackdrop"  title="Imprimir" data-original-title="Imprimir" style="background: #771A1A; border-color: #771A1A" ></button>
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>

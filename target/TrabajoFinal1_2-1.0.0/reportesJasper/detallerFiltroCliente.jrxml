@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="detallerFiltroCliente" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f5f16200-b3bd-43d7-8a2e-4e0b6ecee206">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DBTaller"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="Parameter1" class="java.lang.String"/>
+	<parameter name="Parameter2" class="java.lang.String"/>
+	<parameter name="Parameter3" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT taller_utp1.servicio.total,
+	taller_utp1.cita.fecha_hora,
+	taller_utp1.aparato.descripcion,
+	taller_utp1.marca.descripcion,
+	taller_utp1.persona.nombres,
+	taller_utp1.persona.apellidos
+FROM taller_utp1.servicio
+	INNER JOIN taller_utp1.cita ON 
+	 taller_utp1.servicio.id_cita = taller_utp1.cita.id_cita 
+	INNER JOIN taller_utp1.aparato ON 
+	 taller_utp1.cita.id_aparato = taller_utp1.aparato.id_aparato 
+	INNER JOIN taller_utp1.marca ON 
+	 taller_utp1.aparato.id_marca = taller_utp1.marca.id_marca 
+	INNER JOIN taller_utp1.persona ON 
+	 taller_utp1.servicio.id_tecnico = taller_utp1.persona.id_persona 
+WHERE 
+	 taller_utp1.cita.id_persona =  $P{Parameter1} AND cita.fecha_hora BETWEEN  $P{Parameter2} AND $P{Parameter3}]]>
+	</queryString>
+	<field name="total" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="total"/>
+		<property name="com.jaspersoft.studio.field.label" value="total"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="servicio"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha_hora" class="java.time.LocalDateTime">
+		<property name="com.jaspersoft.studio.field.name" value="fecha_hora"/>
+		<property name="com.jaspersoft.studio.field.label" value="fecha_hora"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cita"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="descripcion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="descripcion"/>
+		<property name="com.jaspersoft.studio.field.label" value="descripcion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="aparato"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="COLUMN_4" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="descripcion"/>
+		<property name="com.jaspersoft.studio.field.label" value="descripcion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="marca"/>
+	</field>
+	<field name="nombres" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombres"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombres"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="persona"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="apellidos" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="apellidos"/>
+		<property name="com.jaspersoft.studio.field.label" value="apellidos"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="persona"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="31" splitType="Stretch">
+			<textField>
+				<reportElement x="460" y="0" width="95" height="30" uuid="8b1a9592-51e3-4bdd-b2cb-dd2d68cd8bde">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dded4eae-d1c7-4794-9a51-5ea757e5076b"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="370" y="0" width="92" height="30" uuid="fbaa527d-7240-4529-8594-5aa4c935be0c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6262b7a9-456e-4e4e-95b1-9e1610e537fd"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{fecha_hora}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="186" y="0" width="92" height="30" uuid="bff38214-adf9-460b-b1e3-3967cf6a57d4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ce5b6f27-4b19-4492-8ce3-c499ae32289b"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="278" y="0" width="92" height="30" uuid="9241786b-23ac-48b9-9003-898b3292d768">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="91f7955d-f701-45f8-a2f4-741c0c9dfab8"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{COLUMN_4}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="-1" y="0" width="92" height="30" uuid="9d34c990-a6af-4855-81c1-0a155a41b317">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e7671369-2a98-4409-8c6f-983658d4f10f"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{nombres}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="0" width="92" height="30" uuid="44401a84-aec0-464a-ab8f-140350ecaf4f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2e5fe902-845c-4430-905d-609a689d9fbc"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{apellidos}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

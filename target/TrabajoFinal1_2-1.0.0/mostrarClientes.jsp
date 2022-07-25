@@ -113,6 +113,11 @@
                                         </ul>
                                     </div>
                                 </div>
+                                <div class="card-block">
+                                    <a href="ServletGenerarReportes?btnIngresar=ReporteCliente" target="_blank">
+                                        <button type="button" class="btn btn-primary waves-effect waves-light fa fa-print" data-toggle="modal" data-target="#staticBackdrop"  title="Seleccionar" data-original-title="Seleccionar" style="background: #771A1A; border-color: #771A1A;"> Inprimir</button>
+                                    </a>
+                                </div>
                                 <div class="card-block table-border-style">
                                     <div class="table-responsive">
                                         <table class="table table-hover">

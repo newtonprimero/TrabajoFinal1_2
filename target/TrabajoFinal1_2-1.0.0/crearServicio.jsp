@@ -74,7 +74,7 @@
                         <div class="pcoded-content">
                             <!-- Page-header start -->
 
-                            <%@include file="cabecera/cabeceraVisita.jsp" %>
+                            <%@include file="cabecera/cabeceraTaller.jsp" %>
                             <!-- Page-header end -->
 
                             <div class="col-md-12">
@@ -87,7 +87,7 @@
                                                         <input type="hidden" name="txtidtec" value="${usuario.id_persona}">
                                                         <div class="row m-b-20">
                                                             <div class="col-md-12">
-                                                                <h3 class="text-center txt-primary">Generar Cita</h3>
+                                                                <h3 class="text-center txt-primary">Registro de Datos</h3>
                                                             </div>
                                                         </div>
                                                         <div class="form-group form-static-label">

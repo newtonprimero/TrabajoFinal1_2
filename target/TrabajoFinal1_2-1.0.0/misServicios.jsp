@@ -112,8 +112,8 @@
                                     <div class="table-responsive">
                                         <form action="ServletValidar?accion=misservicios" method="post">
                                             <input id="prodId" name="txtidper" type="hidden" value="${usuario.id_persona}" >
-                                            <button class="btn btn-primary waves-effect waves-light" type="submit" name="shear" value="citas"> Mostrar Ciras</button>
-                                            <button class="btn btn-primary waves-effect waves-light" type="submit" name="shear" value="misServi"> Mostrar Servicios</button>
+                                            <button class="btn btn-primary waves-effect waves-light" type="submit" name="shear" value="citas" style="background: #771A1A; border-color: #771A1A;"> Mostrar Ciras</button>
+                                            <button class="btn btn-primary waves-effect waves-light" type="submit" name="shear" value="misServi" style="background: #771A1A; border-color: #771A1A;"> Mostrar Servicios</button>
                                         </form>
                                         <table class="table table-hover">
                                             <thead>
@@ -148,8 +148,11 @@
                                                             <td><span class="badge bg-red active" style="color: #000;background: #dc3545">Servicio en hecho</span></td>
                                                         </c:if>
                                                         <td>
-                                                            <button type="button" class="btn btn-primary fa fa-times" data-toggle="tooltip"  title="Desabilitar" data-original-title="Desabilitar" style="background: #771A1A; border-color: #771A1A"></button>
-                                                            <button type="button" class="btn btn-primary fa fa-pencil" data-toggle="tooltip"  title="Editar" data-original-title="Editar" style="background: #771A1A; border-color: #771A1A"></button>
+                                                            <a target="_blank" href="<c:url value="ServletGenerarReportes" >
+                                                                   <c:param name="btnIngresar" value="hojaServiciosTaller" />
+                                                                   <c:param name="idhoja" value="${cliente.id_servicio}" />
+                                                               </c:url>"><button type="button" class="btn btn-primary fa fa-print" data-toggle="modal" data-target="#staticBackdrop"  title="Imprimir" data-original-title="Imprimir" style="background: #771A1A; border-color: #771A1A" ></button>
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>

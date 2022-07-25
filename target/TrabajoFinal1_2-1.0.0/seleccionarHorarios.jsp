@@ -138,7 +138,7 @@
                                                             <a href="<c:url value="ServletValidar">
                                                                         <c:param name="accion" value="leerHorario" />
                                                                         <c:param name="idhorario" value="${hora.id_horario}" />
-                                                                    </c:url>"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop"  title="Editar" data-original-title="Editar" style="background: #771A1A; border-color: #771A1A">Seleccionar</button>
+                                                                    </c:url>"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop"  title="Seleccionar" data-original-title="Seleccionar" style="background: #771A1A; border-color: #771A1A">Seleccionar</button>
                                                             </a>
                                                         </td>
                                                     </tr>

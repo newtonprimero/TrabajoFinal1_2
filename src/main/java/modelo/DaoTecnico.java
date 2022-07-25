@@ -184,7 +184,7 @@ public class DaoTecnico {
         String hoy=actual.format(dtf);
         String manana=mañana.format(dtf);
         String sql="SELECT horarios.id_horario,horarios.fecha, horarios.hora_ini, horarios.hora_fin,distrito.nombre_distrito, cita.direccion, persona.nombres, persona.apellidos, persona.dni, horarios.estado_activ,servicio_domicilio.id_servicio_domi,servicio_domicilio.estado_activ FROM `horarios`INNER JOIN servicio_domicilio ON servicio_domicilio.id_horario=horarios.id_horario INNER JOIN cita ON cita.id_cita=servicio_domicilio.id_cita INNER JOIN distrito ON distrito.id_distrito=cita.id_distrito INNER JOIN persona ON persona.id_persona=cita.id_persona "
-                + " WHERE horarios.estado_activ=0 AND horarios.id_persona="+idt;
+                + " WHERE horarios.estado_activ=0 AND horarios.id_persona="+idt+" AND horarios.fecha BETWEEN '"+hoy+"' AND '"+manana+"';";
         try {
             con=cn.Conexion();
             ps=con.prepareStatement(sql);

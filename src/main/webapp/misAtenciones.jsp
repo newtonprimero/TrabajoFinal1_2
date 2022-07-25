@@ -134,13 +134,23 @@
                                                         </c:if>
                                                         <td>
                                                             <input type="hidden" class="domTextElement2" value="${hora.id_servicio}">
-                                                            <input type="hidden" class="domTextElement" value="${hora.getCita().id_cita}">
-                                                            <button type="button" class="btn btn-primary fa fa-money" onclick="getValueInput(${status.index})" data-toggle="modal"  title="Dar presupuesto" data-original-title="Dar presupuesto" data-target="#exampleModal" style="background: #771A1A; border-color: #771A1A"></button>
-                                                            <button type="button" class="btn btn-primary fa fa-times" onclick="getValueInput2(${status.index})" data-toggle="modal" data-target="#exampleModal2"  title="Cancelar" data-original-title="Cancelar" style="background: #771A1A; border-color: #771A1A"></button>
+                                                            <input type="hidden" name="txtidCitaa" class="domTextElement" value="${hora.getCita().id_cita}">
                                                             <a href="<c:url value="ServletValidar">
-                                                                   <c:param name="accion" value="leerServicioDomi" />
+                                                                   <c:param name="accion" value="leerServicioasig" />
+                                                                   <c:param name="idservicio" value="${hora.id_servicio}" />
+                                                               </c:url>"><button type="button" class="btn btn-primary fa fa-money" data-toggle="modal" data-target="#staticBackdrop"  title="Dar presupuesto" data-original-title="Dar presupuesto" style="background: #771A1A; border-color: #771A1A"></button>
+                                                            </a>
+                                                            <!-- <button type="button" class="btn btn-primary fa fa-money" onclick="getValueInput()" data-toggle="modal"  title="Dar presupuesto" data-original-title="Dar presupuesto" data-target="#exampleModal" style="background: #771A1A; border-color: #771A1A"></button>
+                                                            --><button type="button" class="btn btn-primary fa fa-times" onclick="getValueInput2(${status.index})" data-toggle="modal" data-target="#exampleModal2"  title="Cancelar" data-original-title="Cancelar" style="background: #771A1A; border-color: #771A1A"></button>
+                                                            <a href="<c:url value="ServletValidar">
+                                                                   <c:param name="accion" value="leerServicio" />
                                                                    <c:param name="idservicio" value="${hora.id_servicio}" />
                                                                </c:url>"><button type="button" class="btn btn-primary fa fa-cart-plus" data-toggle="modal" data-target="#staticBackdrop"  title="Completar" data-original-title="Completar" style="background: #771A1A; border-color: #771A1A"></button>
+                                                            </a>
+                                                            <a target="_blank" href="<c:url value="ServletGenerarReportes" >
+                                                                   <c:param name="btnIngresar" value="hojaServiciosTaller" />
+                                                                   <c:param name="idhoja" value="${hora.id_servicio}" />
+                                                               </c:url>"><button type="button" class="btn btn-primary fa fa-print" data-toggle="modal" data-target="#staticBackdrop"  title="Imprimir" data-original-title="Imprimir" style="background: #771A1A; border-color: #771A1A" ></button>
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -149,13 +159,112 @@
                                         </table>
                                         <!-- Modal -->
                                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
+                                            <div class="modal-dialog modal-lg" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="exampleModalLabel">Asignacion de presupuesto</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
+                                                    </div>
+                                                    <div class="col-sm-10">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <h5>Repuestos disponibles</h5>
+                                                                <div class="card-header-right">
+                                                                    <ul class="list-unstyled card-option">
+                                                                        <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                                                        <li><i class="fa fa-window-maximize full-card"></i></li>
+                                                                        <li><i class="fa fa-minus minimize-card"></i></li>
+                                                                        <li><i class="fa fa-refresh reload-card"></i></li>
+                                                                        <li><i class="fa fa-trash close-card"></i></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-block table-border-style">
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-striped table-bordered" id="examplerr">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Nombre</th>
+                                                                                <th>Marca</th>
+                                                                                <th>Accion</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <c:forEach var="repuesto" items="${listarRepuestos}" varStatus="status">
+                                                                                <tr>
+                                                                                    <td style="width: 10px; word-wrap: break-word;">${repuesto.nombre_repuesto}</td>
+                                                                                    <td>${repuesto.nombre_marca}</td>
+                                                                                    <td>
+                                                                                        <a href="<c:url value="ServletValidar">
+                                                                                               <c:param name="accion" value="agregarPresu" />
+                                                                                               <c:param name="txtidrepuesto" value="${repuesto.id_repuesto}" />
+                                                                                           </c:url>"><button type="button" name="shear" value="buscarRepuesto" class="btn btn-primary fa fa-cart-plus" data-toggle="modal" data-target="#staticBackdrop"  title="Agregar" data-original-title="Agregar" style="background: #771A1A; border-color: #771A1A"></button>
+                                                                                        </a>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </c:forEach>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <input type="hidden" name="txtidrepuesto2" class="form-control" value="${repuesto.id_repuesto}">
+                                                    <input type="hidden" name="txtdescripcion"  class="form-control" value="${repuesto.nombre_repuesto}">
+                                                    <input type="hidden" name="txtcosto" class="form-control" value="${repuesto.precio}">
+                                                    <input type="hidden" name="txtcantidad" class="form-control" required="" value="1">
+                                                    <div class="col-md-10">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <h5>Detalles de Servicios</h5>
+                                                                <div class="card-header-right">
+                                                                    <ul class="list-unstyled card-option">
+                                                                        <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                                                        <li><i class="fa fa-window-maximize full-card"></i></li>
+                                                                        <li><i class="fa fa-minus minimize-card"></i></li>
+                                                                        <li><i class="fa fa-refresh reload-card"></i></li>
+                                                                        <li><i class="fa fa-trash close-card"></i></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-block table-border-style">
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-hover">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>NRO</th>
+                                                                                <th>Codigo</th>
+                                                                                <th>Descripcion</th>
+                                                                                <th>Monto</th>
+                                                                                <th>Cantidad</th>
+                                                                                <th>Subtotal</th>
+                                                                                <th>Acción</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <c:forEach var="list" items="${lista}" varStatus="status">
+                                                                                <tr>
+                                                                                    <td>${status.index+1}</td>
+                                                                                    <td>${list.id_repuesto}</td>
+                                                                                    <td>${list.descripcion}</td>
+                                                                                    <td>${list.costo}</td>
+                                                                                    <td>${list.catidad}</td>
+                                                                                    <td>${list.subTotal}</td>
+                                                                                    <td><button class="btn btn-primary fa fa-trash" style="background: #771A1A; border-color: #771A1A"></button></td>
+                                                                                </tr>
+                                                                            </c:forEach>
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <div class="row col-sm-12" style="text-align: right;">
+                                                                        <p class="col-sm-10">Total:</p>
+                                                                        <input type="hidden" name="txttotal" class="form-control col-sm-2" value="${totalpagar}" placeholder="col">
+                                                                        <input type="text" class="form-control col-sm-2" value="${totalpagar}" placeholder="col" disabled>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <form class="md-float-material form-material" action="ServletValidar?accion=agregarPresu" method="post">
                                                         <div class="modal-body">

@@ -205,8 +205,9 @@
                                                                 <input type="number" step="0.01" name="txttotal" class="form-control"
                                                                        required="" placeholder="0.0">
                                                                 <span class="form-bar"></span>
-                                                                <label class="float-label" style="font-size: 15px">Ingrese Costo de Revicion</label>
+                                                                <label class="float-label" style="font-size: 15px">Ingrese Costo de RevIIIicion</label>
                                                             </div>
+                                                           
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>

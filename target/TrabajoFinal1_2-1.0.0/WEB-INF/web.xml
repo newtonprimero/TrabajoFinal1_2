@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <servlet>
-        <servlet-name>servletControl</servlet-name>
-        <servlet-class>controlador.servletControl</servlet-class>
+        <servlet-name>ServletHorarios</servlet-name>
+        <servlet-class>controlador.ServletHorarios</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ServletValidar</servlet-name>
@@ -12,9 +12,13 @@
         <servlet-name>ServletCliente</servlet-name>
         <servlet-class>controlador.ServletCliente</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletGenerarReportes</servlet-name>
+        <servlet-class>controlador.ServletGenerarReportes</servlet-class>
+    </servlet>
     <servlet-mapping>
-        <servlet-name>servletControl</servlet-name>
-        <url-pattern>/servletControl</url-pattern>
+        <servlet-name>ServletHorarios</servlet-name>
+        <url-pattern>/ServletHorarios</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ServletValidar</servlet-name>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>ServletCliente</servlet-name>
         <url-pattern>/ServletCliente</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletGenerarReportes</servlet-name>
+        <url-pattern>/ServletGenerarReportes</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

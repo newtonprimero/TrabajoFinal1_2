@@ -153,7 +153,7 @@
 
         </ul>
 
-        <div class="pcoded-navigation-label" data-i18n="nav.category.other">Generar Reportes &amp; Facturas</div>
+        <div class="pcoded-navigation-label" data-i18n="nav.category.other">Generar Reportes</div>
         <ul class="pcoded-item pcoded-left-item">
             <li class="pcoded-hasmenu " id="iluminar">
                 <a href="javascript:void(0)" class="waves-effect waves-dark">
@@ -163,46 +163,20 @@
                 </a>
                 <ul class="pcoded-submenu">
                     <li class="">
-                        <a href="javascript:void(0)" class="waves-effect waves-dark">
-                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                            <span class="pcoded-mtext"
-                                  data-i18n="nav.menu-levels.menu-level-21">Clientes</span>
+                        <a href="ServletValidar?accion=formReportFiltrosCliente" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="ti-layers"></i><b>FC</b></span>
+                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Por Cliente</span>
                             <span class="pcoded-mcaret"></span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="javascript:void(0)" class="waves-effect waves-dark">
-                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                            <span class="pcoded-mtext"
-                                  data-i18n="nav.menu-levels.menu-level-21">Repuestos</span>
+                        <a href="ServletValidar?accion=formReportFiltrosTecnico" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="ti-layers"></i><b>FC</b></span>
+                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Por Tecnico</span>
                             <span class="pcoded-mcaret"></span>
                         </a>
                     </li>
-                    <li class="">
-                        <a href="javascript:void(0)" class="waves-effect waves-dark">
-                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                            <span class="pcoded-mtext"
-                                  data-i18n="nav.menu-levels.menu-level-22.main">Tecnicos</span>
-                            <span class="pcoded-mcaret"></span>
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="javascript:void(0)" class="waves-effect waves-dark">
-                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                            <span class="pcoded-mtext"
-                                  data-i18n="nav.menu-levels.menu-level-23">Avanzado</span>
-                            <span class="pcoded-mcaret"></span>
-                        </a>
-                    </li>
-
                 </ul>
-            </li>
-            <li>
-                <a href="bs-basic-table.html" class="waves-effect waves-dark">
-                    <span class="pcoded-micon"><i class="ti-layers"></i><b>FC</b></span>
-                    <span class="pcoded-mtext" data-i18n="nav.form-components.main">Factura</span>
-                    <span class="pcoded-mcaret"></span>
-                </a>
             </li>
         </ul>
     </div>

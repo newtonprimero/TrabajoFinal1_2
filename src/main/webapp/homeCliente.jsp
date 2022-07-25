@@ -71,97 +71,60 @@
 
                             <%@include file="cabecera/cabecera.jsp" %>
                             <!-- Page-header end -->
-
-                            <div class="col-md-12">
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <form class="md-float-material form-material">
-
-                                                <div class="auth-box card">
-                                                    <div class="card-block">
-                                                        <div class="row m-b-20">
-                                                            <div class="col-md-12">
-                                                                <h3 class="text-center txt-primary">Nuevo Servicio</h3>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group form-primary row">
-                                                            <div class="form-group col-sm-8" >
-                                                                <input type="text" name="user-name" class="form-control"
-                                                                       required="">
-                                                                <span class="form-bar"></span>
-                                                                <label class="float-label" style="margin-left:15px ;">Ingrese DNI del cliente</label>   
-                                                            </div>
-                                                            <div class="form-group col-sm-4" >
-                                                                <button class="btn btn-primary btn-md waves-effect text-center m-b-12">Buscar</button>
-                                                                <span class="form-bar"></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group form-primary">
-                                                            <input type="text" name="user-name" class="form-control"
-                                                                   required="" disabled>
-                                                            <span class="form-bar"></span>
-                                                            <label class="float-label">Nombres</label>
-                                                        </div>
-                                                        <div class="form-group form-primary">
-                                                            <input type="text" name="user-name" class="form-control"
-                                                                   required="" disabled>
-                                                            <span class="form-bar"></span>
-                                                            <label class="float-label">Apellidos</label>
-                                                        </div>
-                                                        <div class="form-group form-primary">
-                                                            <input type="hidden" name="email" class="form-control"
-                                                                   required="">
-                                                            <span class="form-bar"></span>
-                                                            <select name="typeUser" class="form-control" id="">
-                                                                <option value="">Seleccione el tipo de servicio</option>
-                                                                <option value="Tecnico">Mantenimiento</option>
-                                                                <option value="Encargado">Reparación</option>
-                                                                <option value="Encargado">Diagnostico</option>
-                                                                <option value="Encargado">Repuestos</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group form-primary">
-                                                            <input type="text" name="user-name" class="form-control"
-                                                                   required="">
-                                                            <span class="form-bar"></span>
-                                                            <label class="float-label">Codigo electrodomÃ©nstico</label>
-                                                        </div>
-                                                        <div class="form-group form-primary">
-                                                            <input type="text" name="user-name" class="form-control"
-                                                                   required="">
-                                                            <span class="form-bar"></span>
-                                                            <label class="float-label">Monto</label>
-                                                        </div>
-                                                        <div class="form-group form-primary">
-                                                            <input type="text" name="email" class="form-control"
-                                                                   required="">
-                                                            <span class="form-bar"></span>
-                                                            <label class="float-label">Cantidad</label>
-                                                        </div>
-
-                                                        <div class="row m-t-30">
-                                                            <div class="col-md-12">
-                                                                <button type="button"
-                                                                        class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">Ingresar</button>
-                                                            </div>
-                                                        </div>
-                                                        <hr />
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-
-                                        <!-- Hover table card start -->
-                                        
-                                        <!-- Hover table card end -->
-                                        <!-- end of col-sm-12 -->
+                            <div class="card">
+                                <div class="col-md-12">
+                                    <div class="card-header">
+                                        <h5>Mis Servicios</h5>
+                                        <span>Visualice de<code> actividades</code> que he realizado.</span>
                                     </div>
-                                    <!-- end of row -->
+                                    <div class="card-block table-border-style">
+                                        <div class="table-responsive">
+                                            <form action="ServletValidar?accion=misservicios" method="post">
+                                                <input id="prodId" name="txtidper" type="hidden" value="${usuario.id_persona}" >
+                                                <button class="btn btn-primary waves-effect waves-light" type="submit" name="shear" value="citas" style="background: #771A1A; border-color: #771A1A;"> Mostrar Ciras</button>
+                                                <button class="btn btn-primary waves-effect waves-light" type="submit" name="shear" value="misServi" style="background: #771A1A; border-color: #771A1A;"> Mostrar Servicios</button>
+                                                <a href="ServletValidar?accion=listarhoraiosservi"><button class="btn btn-primary waves-effect waves-light" type="button" name="shear" value="misServi" style="background: #771A1A; border-color: #771A1A;">Solicitar Visita</button></a>
+                                            </form>
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Nro Serie</th>
+                                                        <th>Marca</th>
+                                                        <th>Descripción</th>
+                                                        <th>Estado</th>
+                                                        <th>Fecha Hora</th>
+                                                        <th>Accion</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <c:forEach var="cliente" items="${listaServicios}" varStatus="status">
+                                                        <tr>
+                                                            <td>${status.index + 1}</td>
+                                                            <td>${cliente.getAparato().getNroSerie()}</td>
+                                                            <td>${cliente.getAparato().getMarca().descripcion}</td>
+                                                            <td>${cliente.getAparato().descAparato}</td>
+                                                            <c:if test="${cliente.estado_activ == true}">
+                                                                <td><span class="badge bg-green active" style="color: #000;background: #198754">Servicio en proceso</span></td>
+                                                            </c:if>
+                                                            <c:if test="${cliente.estado_activ == false}">
+                                                                <td><span class="badge bg-red active" style="color: #000;background: #dc3545">Servicio en hecho</span></td>
+                                                            </c:if>
+                                                            <td>${cliente.fecha_hora}</td>
+
+                                                            <td>
+                                                                <button type="button" class="btn btn-primary fa fa-times" data-toggle="tooltip"  title="Desabilitar" data-original-title="Desabilitar" style="background: #771A1A; border-color: #771A1A"></button>
+                                                                <button type="button" class="btn btn-primary fa fa-pencil" data-toggle="tooltip"  title="Editar" data-original-title="Editar" style="background: #771A1A; border-color: #771A1A"></button>
+                                                            </td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
                                 </div>
-
                             </div>
-
                         </div>
                     </div>
                 </div>

@@ -77,7 +77,7 @@
                                     <div class="row">
                                         <div class="col-sm-7">
                                             <form class="md-float-material form-material" action="ServletValidar?accion=registrarcita2" method="post">
-
+                                                <input type="hidden" name="txtCorreo" value="${usuario.getCorreo()}">
                                                 <div class="auth-box card">
                                                 <div class="card-block">
                                                     <div class="row m-b-20">

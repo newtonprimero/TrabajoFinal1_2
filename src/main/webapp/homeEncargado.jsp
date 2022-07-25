@@ -75,75 +75,108 @@
                             <div class="col-md-12">
                                 <div class="container-fluid">
                                     <div class="row">
-                                        <div class="col-sm-6">
-                                            <form class="md-float-material form-material">
-
+                                        <div class="col-sm-8">
+                                            <form class="form-material" action="ServletValidar?accion=buscardni" method="post">
                                                 <div class="auth-box card">
                                                     <div class="card-block">
+
                                                         <div class="row m-b-20">
                                                             <div class="col-md-12">
-                                                                <h3 class="text-center txt-primary">Nuevo Servicio</h3>
+                                                                <h3 class="text-center txt-primary">Buscar tecnico</h3>
                                                             </div>
+
+                                                        </div>
+
+                                                        <div class="table-responsive">
+                                                            <table class="table table-striped table-bordered" id="examplerr">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Nombres Apellidos</th>
+                                                                        <th>Telefonos</th>
+                                                                        <th>Especialidad</th>
+                                                                        <th>Acción</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <c:forEach var="tenico" items="${listaTecnico}" varStatus="status">
+                                                                        <tr>
+                                                                            <td>${tenico.nombres} ${tenico.apellidos}</td>
+                                                                            <td>${tenico.telefono1} - ${tenico.telefono2}</td>
+                                                                            <td>${tenico.especialidad}</td>
+                                                                            <td>
+                                                                                <a href="<c:url value="ServletValidar">
+                                                                                       <c:param name="accion" value="buscartecnicohora" />
+                                                                                       <c:param name="idtecnico" value="${tenico.id_tecn}" />
+                                                                                       <c:param name="txtdnishear" value="${tecnico.dni}" />
+                                                                                   </c:url>"><button type="button" class="btn btn-primary fa fa-calendar" data-toggle="modal" data-target="#staticBackdrop"  title="Seleecionar" data-original-title="Seleecionar" style="background: #771A1A; border-color: #771A1A"></button>
+                                                                                </a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </c:forEach>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <form class="form-material" action="ServletValidar?accion=buscardni" method="post">
+                                                <div class="auth-box card">
+                                                    <div class="card-block">
+
+                                                        <div class="row m-b-20">
+                                                            <div class="col-md-12">
+                                                                <h3 class="text-center txt-primary">Asignar Horario</h3>
+                                                            </div>
+
                                                         </div>
                                                         <div class="form-group form-primary row">
-                                                            <div class="form-group col-sm-8" >
-                                                                <input type="text" name="user-name" class="form-control"
-                                                                       required="">
-                                                                <span class="form-bar"></span>
-                                                                <label class="float-label" style="margin-left:15px ;">Ingrese DNI del cliente</label>   
-                                                            </div>
-                                                            <div class="form-group col-sm-4" >
-                                                                <button class="btn btn-primary btn-md waves-effect text-center m-b-12">Buscar</button>
-                                                                <span class="form-bar"></span>
+                                                            <div class="form-group col-sm-12" >
+                                                                <input type="hidden" name="txtdnishear" value="${tecnico.dni}">
+                                                                <input type="text" name="txtidtecnico" disabled class="form-control"
+                                                                       required="" value="${tecnico.nombres} ${tecnico.apellidos}">
+                                                                <span class="form-bar">Nombres y Apellidos</span>
+                                                                <label class="float-label" style="margin-left:15px ;"></label>   
                                                             </div>
                                                         </div>
+                                                        <hr />
                                                         <div class="form-group form-primary">
-                                                            <input type="text" name="user-name" class="form-control"
-                                                                   required="" disabled>
                                                             <span class="form-bar"></span>
-                                                            <label class="float-label">Nombres</label>
-                                                        </div>
-                                                        <div class="form-group form-primary">
-                                                            <input type="text" name="user-name" class="form-control"
-                                                                   required="" disabled>
-                                                            <span class="form-bar"></span>
-                                                            <label class="float-label">Apellidos</label>
-                                                        </div>
-                                                        <div class="form-group form-primary">
-                                                            <input type="hidden" name="email" class="form-control"
-                                                                   required="">
-                                                            <span class="form-bar"></span>
-                                                            <select name="typeUser" class="form-control" id="">
-                                                                <option value="">Seleccione el tipo de servicio</option>
-                                                                <option value="Tecnico">Mantenimiento</option>
-                                                                <option value="Encargado">Reparación</option>
-                                                                <option value="Encargado">Diagnostico</option>
-                                                                <option value="Encargado">Repuestos</option>
+                                                            <select name="selecEstado" class="form-control" >
+                                                                <option value="">Seleccione estado</option>
+                                                                <option value="true">Activo</option>
+                                                                <option value="false">Resuelto</option>
                                                             </select>
                                                         </div>
                                                         <div class="form-group form-primary">
-                                                            <input type="text" name="user-name" class="form-control"
-                                                                   required="">
-                                                            <span class="form-bar"></span>
-                                                            <label class="float-label">Codigo electrodomÃ©nstico</label>
+                                                            <div class="form-group col-sm-12" >
+                                                                <label class="col-sm-3" >Fecha</label> 
+                                                                <input type="date" name="inputfecha" class="form-control col-sm-8"
+                                                                       required="">
+                                                                <span class="form-bar"></span>
+                                                            </div>
                                                         </div>
                                                         <div class="form-group form-primary">
-                                                            <input type="text" name="user-name" class="form-control"
-                                                                   required="">
-                                                            <span class="form-bar"></span>
-                                                            <label class="float-label">Monto</label>
-                                                        </div>
-                                                        <div class="form-group form-primary">
-                                                            <input type="text" name="email" class="form-control"
-                                                                   required="">
-                                                            <span class="form-bar"></span>
-                                                            <label class="float-label">Cantidad</label>
+                                                            <div class="form-group col-sm-12" >
+                                                                <label class="col-sm-3">Hora Inico</label> 
+                                                                <input type="time" name="inputHIni" class="form-control col-sm-4"
+                                                                       required="">
+                                                                <span class="form-bar"></span>
+                                                            </div>
+                                                            <div class="form-group col-sm-12" >
+                                                                <label class="col-sm-3">Hora Fin</label> 
+                                                                <input type="time" name="inputHFin" class="form-control col-sm-4"
+                                                                       required="">
+                                                                <span class="form-bar"></span>
+                                                            </div>
                                                         </div>
 
                                                         <div class="row m-t-30">
                                                             <div class="col-md-12">
-                                                                <button type="button"
-                                                                        class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">Ingresar</button>
+                                                                <button type="submit"
+                                                                        class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20" name="shear" value="shearIngresarH" >Ingresar</button>
                                                             </div>
                                                         </div>
                                                         <hr />
@@ -151,12 +184,11 @@
                                                 </div>
                                             </form>
                                         </div>
-
                                         <!-- Hover table card start -->
-                                        <div div class="col-sm-6">
+                                        <div class="col-sm-8">
                                             <div class="card">
                                                 <div class="card-header">
-                                                    <h5>Orden de Servicios</h5>
+                                                    <h5>Horario</h5>
                                                     <div class="card-header-right">
                                                         <ul class="list-unstyled card-option">
                                                             <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -169,56 +201,42 @@
                                                 </div>
                                                 <div class="card-block table-border-style">
                                                     <div class="table-responsive">
-                                                        <table class="table table-hover">
+                                                        <table class="table table-hover" >
                                                             <thead>
                                                                 <tr>
-                                                                    <th>NRO</th>
-                                                                    <th>Servico</th>
-                                                                    <th>Monto</th>
-                                                                    <th>Cantidad</th>
-                                                                    <th>Subtotal</th>
-                                                                    <th>AcciÃ³n</th>
+                                                                    <th>#</th>
+                                                                    <th>Apellidos</th>
+                                                                    <th>Dni</th>
+                                                                    <th>Fecha</th>
+                                                                    <th>Hora Inicio</th>
+                                                                    <th>Hora Fin</th>
+                                                                    <th>Estado</th>
+                                                                    <th>Acción</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr>
-                                                                    <th scope="row">1</th>
-                                                                    <td>Mark</td>
-                                                                    <td>Otto</td>
-                                                                    <td>@mdo</td>
-                                                                    <td>@mdo</td>
-                                                                    <td><button>Eliminar</button></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th scope="row">2</th>
-                                                                    <td>Jacob</td>
-                                                                    <td>Thornton</td>
-                                                                    <td>@fat</td>
-                                                                    <td>@mdo</td>
-                                                                    <td><button>Eliminar</button></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th scope="row">3</th>
-                                                                    <td>Larry</td>
-                                                                    <td>the Bird</td>
-                                                                    <td>@twitter</td>
-                                                                    <td>@mdo</td>
-                                                                    <td><button>Eliminar</button></td>
-                                                                </tr>
+                                                                <c:forEach var="hoarios" items="${listaHorarios}" varStatus="status">
+                                                                    <tr>
+                                                                        <td>${status.index + 1}</td>
+                                                                        <td>${hoarios.getTecnico().apellidos}</td>
+                                                                        <td>${hoarios.getTecnico().dni}</td>
+                                                                        <td>${hoarios.fecha}</td>
+                                                                        <td>${hoarios.horaini}</td>
+                                                                        <td>${hoarios.horafin}</td>
+                                                                        <c:if test="${hoarios.estado_activ == true}">
+                                                                            <td><span class="badge bg-green active" style="color: #fff;background: #198754">Activo </span></td>
+                                                                        </c:if>
+                                                                        <c:if test="${hoarios.estado_activ == false}">
+                                                                            <td><span class="badge bg-red active" style="color: #000;background: #dc3545">Concluido </span></td>
+                                                                        </c:if>
+                                                                        <td>
+                                                                            <button type="button" class="btn btn-primary fa fa-times" data-toggle="tooltip"  title="Desabilitar" data-original-title="Desabilitar" style="background: #771A1A; border-color: #771A1A"></button>
+                                                                            <button type="button" class="btn btn-primary fa fa-pencil" data-toggle="tooltip"  title="Editar" data-original-title="Editar" style="background: #771A1A; border-color: #771A1A"></button>
+                                                                        </td>
+                                                                    </tr>
+                                                                </c:forEach>
                                                             </tbody>
                                                         </table>
-                                                        <div class="row col-sm-12" style="text-align: right;">
-                                                            <p class="col-sm-8">IGV:</p>
-                                                            <input type="text" class="form-control col-sm-2" placeholder="col" disabled>
-                                                        </div>
-                                                        <div class="row col-sm-12" style="text-align: right;">
-                                                            <p class="col-sm-8">Total:</p>
-                                                            <input type="text" class="form-control col-sm-2" placeholder="col" disabled>
-                                                        </div>
-                                                        <div class="d-grid gap-2 d-md-flex justify-content-md-end " style="margin-top: 4px;">
-                                                            <button class=" col align-self-end btn btn-danger col-sm-3" >Cancelar</button>
-                                                            <button class=" col align-self-end btn btn-success col-sm-3" >Procesar</button>
-                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

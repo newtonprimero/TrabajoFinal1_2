@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteFiltrosporTecnicos" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5ba98daf-1045-4649-be05-d5d9b7dca79b">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DBTaller"/>
+	<parameter name="paraIdTecnico" class="java.lang.String"/>
+	<parameter name="paraIni" class="java.lang.String"/>
+	<parameter name="paraFin" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT taller_utp1.persona.nombres,
+	taller_utp1.persona.apellidos
+FROM taller_utp1.servicio
+	INNER JOIN taller_utp1.cita ON 
+	 taller_utp1.servicio.id_cita = taller_utp1.cita.id_cita 
+	INNER JOIN taller_utp1.persona ON 
+	taller_utp1.servicio.id_tecnico = taller_utp1.persona.id_persona
+	where servicio.id_tecnico= $P{paraIdTecnico}]]>
+	</queryString>
+	<field name="nombres" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombres"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombres"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="persona"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="apellidos" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="apellidos"/>
+		<property name="com.jaspersoft.studio.field.label" value="apellidos"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="persona"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="121" splitType="Stretch">
+			<staticText>
+				<reportElement x="172" y="60" width="240" height="20" uuid="adb3697b-30fb-4898-8b19-ee55a026a972">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Av. Siempre viva 180 Arequipa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="60" width="60" height="20" uuid="ff07e3c3-901d-4e47-b191-7af50be5a253">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dirección:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="80" width="60" height="20" uuid="37ca13dd-e343-459d-986e-2257867ada27">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Telefonos:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="170" y="80" width="240" height="20" uuid="1206862c-c149-47e2-ae57-99a5229b91b9">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[95000*** - 054 2554**]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="417" y="60" width="100" height="20" uuid="18043663-1cc6-4a33-80a0-7af89a89cf1c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha y Hora:]]></text>
+			</staticText>
+			<textField pattern="HH:mm">
+				<reportElement x="417" y="101" width="100" height="20" uuid="bb455bd8-f7d9-4826-b5e0-6144be2ebe59"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="417" y="81" width="130" height="21" uuid="7c61f0d1-3c79-4d3d-9a31-537633317a3f"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="0" y="20" width="90" height="30" uuid="ef54efdb-b435-4bba-a6ee-4c3925d41c21"/>
+				<imageExpression><![CDATA["D:/Netbeans/TrabajoFinal1_2/src/main/webapp/reportesJasper/img/logo_utp.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="410" y="20" width="145" height="35" uuid="84862ccf-efd0-48c6-b1ac-f76500ee2ac4"/>
+				<textElement>
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Taller UTP]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="375" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="60" width="555" height="24" forecolor="#FFFFFF" backcolor="#771A1A" uuid="13679d56-64e0-4e56-bb7a-b2bc2dfdab21"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reportes de Servcicios por Tecnico]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="74a71ec7-20b2-4e2a-b0e6-d562a19ce287">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="460" y="85" width="95" height="23" uuid="4dda64dc-bfb5-4183-9020-a9d77e3fb23d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dded4eae-d1c7-4794-9a51-5ea757e5076b"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="85" width="92" height="23" uuid="ea5f99e2-0dad-455a-8259-3dbe85b4493c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6262b7a9-456e-4e4e-95b1-9e1610e537fd"/>
+				</reportElement>
+				<text><![CDATA[Fecha y hora]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="186" y="85" width="92" height="23" uuid="3614a9ad-0e22-4826-bd99-6d10cd07d67b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ce5b6f27-4b19-4492-8ce3-c499ae32289b"/>
+				</reportElement>
+				<text><![CDATA[Problema]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="278" y="85" width="92" height="23" uuid="9bb703bc-cbd3-469a-86b4-e618a8c23deb">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="91f7955d-f701-45f8-a2f4-741c0c9dfab8"/>
+				</reportElement>
+				<text><![CDATA[Marca]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="85" width="140" height="23" uuid="2fa399ad-74d1-432a-b34c-4a8fb326a83f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e7671369-2a98-4409-8c6f-983658d4f10f"/>
+				</reportElement>
+				<text><![CDATA[Nombres y Apellidos Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="10" width="200" height="20" uuid="61d0c277-6094-480f-a511-1b495548901d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombres a Apellidos del Tecnico:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="322" y="10" width="100" height="30" uuid="d304b456-5c53-4f2e-a444-7935d47266cd"/>
+				<textFieldExpression><![CDATA[$F{apellidos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="220" y="10" width="100" height="30" uuid="54abc895-789f-47d8-b4ae-bc6cefc9173f"/>
+				<textFieldExpression><![CDATA[$F{nombres}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="108" width="555" height="1" uuid="1e4ab9f6-1058-45b8-a809-8679c3efde19">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="20" y="30" width="100" height="20" uuid="8a8773f7-5852-479a-a4fe-2edbe7381dd1">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Inicio:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="170" y="30" width="100" height="20" uuid="b4765533-291e-4549-955f-d79197d8cde9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Fin:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="30" width="70" height="20" uuid="b30154d8-37c8-4489-bd43-a6f7384cbdf7"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{paraIni}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="-20" y="110" width="200" height="200" uuid="7197d1c0-1e4d-4fc2-af2e-57e1ad2ed791"/>
+				<subreportParameter name="Parameter1">
+					<subreportParameterExpression><![CDATA[$P{paraIdTecnico}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="Parameter2">
+					<subreportParameterExpression><![CDATA[$P{paraIni}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="Parameter3">
+					<subreportParameterExpression><![CDATA[$P{paraFin}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["detallerFiltroTecnico.jasper"]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement x="240" y="30" width="70" height="20" uuid="3fe92fa8-a24f-42df-8d01-4534416397fb"/>
+				<textFieldExpression><![CDATA[$P{paraFin}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

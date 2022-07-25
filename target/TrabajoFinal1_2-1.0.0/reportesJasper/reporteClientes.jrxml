@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteClientes" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4e69b38b-9a78-4e1f-9114-aac8c3e95567">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DBTaller"/>
+	<parameter name="LogoEmpresa" class="java.io.InputStream"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT persona.nombres,
+	persona.apellidos,
+	persona.telefono1,
+	usuario.correo
+FROM persona
+	INNER JOIN usuario ON 
+	 usuario.id_persona = persona.id_persona 
+WHERE 
+	 usuario.estado_activ = 'NULL']]>
+	</queryString>
+	<field name="nombres" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombres"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombres"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="persona"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="apellidos" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="apellidos"/>
+		<property name="com.jaspersoft.studio.field.label" value="apellidos"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="persona"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="telefono1" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="telefono1"/>
+		<property name="com.jaspersoft.studio.field.label" value="telefono1"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="persona"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="correo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="correo"/>
+		<property name="com.jaspersoft.studio.field.label" value="correo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement x="152" y="20" width="250" height="20" uuid="cb341bbb-8469-4032-a971-10c7c24ff562">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Av. Siempre viva 180 Arequipa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="40" width="250" height="20" uuid="2d020b7c-01da-46f3-802d-9f02450e177d">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[95000*** - 054 2554**]]></text>
+			</staticText>
+			<textField pattern="HH:mm">
+				<reportElement x="420" y="40" width="100" height="30" uuid="eef5dd09-0eb8-4218-a9c3-bc705c500fd1"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement x="-10" y="-10" width="80" height="80" uuid="9ccbefda-caaf-4875-938d-b03053569c46">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{LogoEmpresa}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="80" y="0" width="70" height="20" uuid="9691106e-e500-4bb4-a9b2-05b0dc6ba70b">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Taller UTP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="20" width="70" height="20" uuid="cf380491-e832-48ef-8a05-ae24262e50f7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dirección:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="40" width="70" height="20" uuid="e15155c4-36f9-4e3c-8961-84bc744071de">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Telefonos:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="0" width="90" height="20" uuid="e89e8974-86fa-411b-8cb9-d07321a50378">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha y Hora:]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="420" y="20" width="120" height="20" uuid="902a1af6-c698-4297-acf2-761695f69c7e"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="107" splitType="Stretch">
+			<textField>
+				<reportElement x="40" y="60" width="100" height="30" uuid="45c463e7-e281-4d46-a54d-0863c0ac6d8e"/>
+				<textFieldExpression><![CDATA[$F{nombres}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="40" y="30" width="100" height="30" uuid="99f44cbf-714e-4063-b959-a34d995f265a"/>
+				<text><![CDATA[nombres]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="140" y="60" width="100" height="30" uuid="8de1b62f-c213-4259-8192-18a45122ab76"/>
+				<textFieldExpression><![CDATA[$F{apellidos}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="140" y="30" width="100" height="30" uuid="08e7345f-0969-4028-91c3-2e1baa6f7c74"/>
+				<text><![CDATA[apellidos]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="390" y="60" width="100" height="30" uuid="c540acbd-858d-478b-9c90-c57782da7755"/>
+				<textFieldExpression><![CDATA[$F{telefono1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="260" y="60" width="100" height="30" uuid="a40fe1ed-f210-4c94-967f-b5ed11ec40a2"/>
+				<text><![CDATA[telefono1]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="390" y="30" width="100" height="30" uuid="aae58713-0d40-4d38-8bbf-9d23863e3091"/>
+				<textFieldExpression><![CDATA[$F{correo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="260" y="30" width="100" height="30" uuid="91bdcc09-12c2-445f-8e9c-5a0215d00c78"/>
+				<text><![CDATA[correo]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement x="270" y="20" width="100" height="30" uuid="22648a49-07f0-4ca5-9445-f42d201b761c"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

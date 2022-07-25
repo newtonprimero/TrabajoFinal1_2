@@ -69,7 +69,7 @@
                     <div class="pcoded-wrapper">
 
                         <!-- navbar2 coomienzo-->
-                        <<c:if test="${usuario.id_rol==1}">
+                        <c:if test="${usuario.id_rol==1}">
                             <%@include file="navbar/navbar3.jsp" %>
                         </c:if>
                         <c:if test="${usuario.id_rol==2}">
@@ -80,7 +80,7 @@
                         <div class="pcoded-content">
                             <!-- Page-header start -->
 
-                            <%@include file="cabecera/cabeceradetalles.jsp" %>
+                            <%@include file="cabecera/cabecera.jsp" %>
                             <!-- Page-header end -->
                             <div class="pcoded-inner-content">
                                 <!-- Main-body start -->

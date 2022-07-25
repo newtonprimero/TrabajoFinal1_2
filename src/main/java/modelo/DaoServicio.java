@@ -503,6 +503,20 @@ public class DaoServicio {
             System.out.println("el error al ACTUALIZAR servivio es " + e);
         }
     }
+    
+    public void desabilitarHorario(int id){
+        System.out.println("-0-" + id);
+        String sql = "UPDATE `horarios` INNER JOIN servicio_domicilio ON servicio_domicilio.id_horario = horarios.id_horario  SET `horarios`.`estado_activ` = '1' WHERE `servicio_domicilio`.`id_servicio_domi` = "+id;
+        try {
+            con = cn.Conexion();
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.execute();
+            con.commit();
+            con.close();
+        } catch (Exception e) {
+            System.out.println("el error al ACTUALIZAR horarios es " + e);
+        }
+    }
 
     public void completarServicioDomi(int id, double total) {
         System.out.println("-0-" + id);
@@ -526,6 +540,7 @@ public class DaoServicio {
         } catch (Exception e) {
             System.out.println("el error al llenar hoja servivio es " + e);
         }
+        desabilitarHorario(id);
     }
 
     public void cambiarEstado(Servicio servicio) {

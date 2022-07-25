@@ -69,7 +69,7 @@
                     <div class="pcoded-wrapper">
 
                         <!-- navbar2 coomienzo-->
-                        <<c:if test="${usuario.id_rol==1}">
+                        <c:if test="${usuario.id_rol==1}">
                             <%@include file="navbar/navbar3.jsp" %>
                         </c:if>
                         <c:if test="${usuario.id_rol==2}">
@@ -80,7 +80,27 @@
                         <div class="pcoded-content">
                             <!-- Page-header start -->
 
-                            <%@include file="cabecera/cabeceradetalles.jsp" %>
+                            <div class="page-header">
+                                <div class="page-block">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-8">
+                                            <div class="page-header-title">
+                                                <h5 class="m-b-10">Completar Servicio</h5>
+                                                <p class="m-b-0">Se completara la hoja de servicos</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <ul class="breadcrumb-title">
+                                                <li class="breadcrumb-item">
+                                                    <a href="index.html"> <i class="fa fa-home"></i> </a>
+                                                </li>
+                                                <li class="breadcrumb-item"><a href="#!">Dashboard</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <!-- Page-header end -->
                             <div class="pcoded-inner-content">
                                 <!-- Main-body start -->

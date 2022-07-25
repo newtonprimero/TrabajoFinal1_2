@@ -68,7 +68,12 @@
                 <div class="pcoded-main-container">
                     <div class="pcoded-wrapper">
                         <% System.out.println("analisis nav bar");%>
-                        <%@include file="navbar/navbar2.jsp" %>
+                        <c:if test="${usuario.id_rol==1}">
+                            <%@include file="navbar/navbar2.jsp" %>
+                        </c:if>
+                        <c:if test="${usuario.id_rol==2}">
+                            <%@include file="navbar/navbarTecnico.jsp" %>
+                        </c:if>
                         <div class="pcoded-content">
                             <!-- Page-header start -->
                             <div class="page-header">

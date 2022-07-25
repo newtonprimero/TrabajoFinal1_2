@@ -100,6 +100,9 @@ public class ServletGenerarReportes extends HttpServlet {
             case "hojaServiciosTaller":
                 this.reporteHojaTaller(request, response);
                 break;
+            case "reporteCita":
+                reporteporCita(request, response);
+                break;
             default:
                 throw new AssertionError();
         }
@@ -415,5 +418,27 @@ public class ServletGenerarReportes extends HttpServlet {
             System.out.println("---"+e);
         }
     }
+    public void reporteporCita(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ServletOutputStream out = response.getOutputStream();
+        JasperReport report;
+        String path = "C:\\Users\\USUARIO\\JaspersoftWorkspace\\MyReports\\Reportes\\reporteCita.jasper";
+        //String idServi="3";
+        try {
+            report = (JasperReport) JRLoader.loadObjectFromFile(path);
+            InputStream logoEmpresa = this.getServletConfig()
+                    .getServletContext()
+                    .getResourceAsStream("D:\\Netbeans\\TrabajoFinal1_2\\src\\main\\webapp\\reportesJasper\\img\\logo_utp.png");
+            
+            JasperPrint jprint = JasperFillManager.fillReport(path, null, con);
+            JasperExportManager.exportReportToPdfStream(jprint, out);
+            JasperExportManager.exportReportToPdfFile(jprint, "D:\\reporte.pdf");
+            out.flush();
+            out.close();
+
+        } catch (Exception e) {
+            System.out.println("---"+e);
+        }
+    }
+
 
 }

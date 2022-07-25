@@ -52,12 +52,12 @@ public class Correo {
             textoC.setContent("Se ha generado tú cita correctamente podras visualizarla en nuestra plataforma ", "text/html");
             
             BodyPart archivo =new MimeBodyPart();
-            /*archivo.setDataHandler(new DataHandler(new FileDataSource("reportes.pdf")));
-            archivo.setFileName("reportes.pdf");*/
+            archivo.setDataHandler(new DataHandler(new FileDataSource("D:\\reporte.pdf")));
+            archivo.setFileName("reporte.pdf");
             MimeMultipart c= new MimeMultipart();
             
             c.addBodyPart(textoC);
-            //c.addBodyPart(archivo);
+            c.addBodyPart(archivo);
             mensaje.setContent(c);
             
             Transport transporte=session.getTransport("smtp");

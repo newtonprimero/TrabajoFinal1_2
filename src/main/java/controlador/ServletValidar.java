@@ -4,13 +4,17 @@
  */
 package controlador;
 
+import config.Conexion;
 import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +45,11 @@ import modelo.Repuesto;
 import modelo.Servicio;
 import modelo.Tecnicos;
 import modelo.Usuario;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
 
 /**
  *
@@ -238,6 +247,7 @@ public class ServletValidar extends HttpServlet {
                             }
                         } else if (shear.equals("agregarRepuesto")) {
                             agregarCarrito(request);
+                            request.getRequestDispatcher("./detallerServicio.jsp").forward(request, response);
                         } else if (shear.equals("procesar")) {
                             registrarDetallesServicio(request, response);
                             total = 0.0;
@@ -258,6 +268,7 @@ public class ServletValidar extends HttpServlet {
                             request.setAttribute("repuesto", repuest);
                         } else if (shear.equals("agregarRepuesto")) {
                             agregarCarrito(request);
+                            request.getRequestDispatcher("./detallesServicioDomi.jsp").forward(request, response);
                         } else if (shear.equals("procesar")) {
                             registrarDetallesServicioDomi(request, response);
                             total = 0.0;
@@ -280,6 +291,7 @@ public class ServletValidar extends HttpServlet {
                             }
                         } else if (shear.equals("agregarRepuesto")) {
                             agregarCarrito(request);
+                            request.getRequestDispatcher("./agregarPresupuesto.jsp").forward(request, response);
                         } else if (shear.equals("procesar")) {
                             int idcit = idcita;
                             System.out.println("isds " + idcit);
@@ -987,6 +999,7 @@ public class ServletValidar extends HttpServlet {
             horaa.setTecnico(tecni);
             System.out.println("el id horario es " + horaa.getId_horario());
             try {
+                reporteporCita(request, response);
                 Correo co=new Correo();
                 co.enviarCorreo(corre);
                 System.out.println("entro en el else");
@@ -1755,4 +1768,27 @@ public class ServletValidar extends HttpServlet {
         } catch (Exception e) {
         }
     }
+    public void reporteporCita(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Conexion cn = new Conexion();
+    Connection con = cn.Conexion();
+        ServletOutputStream out = response.getOutputStream();
+        JasperReport report;
+        String path = "C:\\Users\\USUARIO\\JaspersoftWorkspace\\MyReports\\Reportes\\reporteCita.jasper";
+        //String idServi="3";
+        try {
+            report = (JasperReport) JRLoader.loadObjectFromFile(path);
+            InputStream logoEmpresa = this.getServletConfig()
+                    .getServletContext()
+                    .getResourceAsStream("D:\\Netbeans\\TrabajoFinal1_2\\src\\main\\webapp\\reportesJasper\\img\\logo_utp.png");
+            
+            JasperPrint jprint = JasperFillManager.fillReport(path, null, con);
+            JasperExportManager.exportReportToPdfFile(jprint, "D:\\reporte.pdf");
+            out.flush();
+            out.close();
+
+        } catch (Exception e) {
+            System.out.println("---"+e);
+        }
+    }
+
 }
